@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drivers>
+	<provider id="athena"/>
+	<provider id="db2"/>
+	<provider id="db2_zos"/>
+	<provider id="db2_i"/>
+	<provider id="elasticsearch"/>
+	<provider id="exasol"/>
+	<provider id="jaybird"/>
+	<provider id="generic"/>
+	<provider id="bigquery"/>
+	<provider id="google_spanner"/>
+	<provider id="greenplum"/>
+	<provider id="h2gis"/>
+	<provider id="hana"/>
+	<provider id="kognitio"/>
+	<provider id="sqlserver"/>
+	<provider id="mssql"/>
+	<provider id="mysql">
+		<driver id="mariaDB" categories="sql" custom="false" embedded="false" name="MariaDB" class="org.mariadb.jdbc.Driver" url="jdbc:mariadb://{host}[:{port}]/[{database}]" port="3306" description="MariaDB JDBC driver">
+			<library type="jar" path="maven:/org.mariadb.jdbc:mariadb-java-client:RELEASE" custom="false" version="2.4.3">
+				<file id="org.mariadb.jdbc:mariadb-java-client" version="2.4.3" path="${drivers_home}/maven/maven-central/org.mariadb.jdbc/mariadb-java-client-2.4.3.jar"/>
+			</library>
+		</driver>
+	</provider>
+	<provider id="open-distro-elasticsearch"/>
+	<provider id="oracle"/>
+	<provider id="postgresql"/>
+	<provider id="snowflake"/>
+	<provider id="vertica"/>
+</drivers>

@@ -1,0 +1,12 @@
+package com.example.demo.domain;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "beers")
+public class Beer {
+	private Long id;
+	
+	private String brand;
+}

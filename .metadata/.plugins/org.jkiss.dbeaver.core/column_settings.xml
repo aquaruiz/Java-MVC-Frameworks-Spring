@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item id="NodeList/MySQLTable">
+		<column name="Table Name" visible="true" order="0" width="159"/>
+		<column name="Engine" visible="true" order="1" width="56"/>
+		<column name="Auto Increment" visible="true" order="2" width="116"/>
+		<column name="Data Length" visible="true" order="3" width="93"/>
+		<column name="Description" visible="true" order="4" width="360"/>
+	</item>
+	<item id="NodeList/MySQLTableColumn">
+		<column name="Column Name" visible="true" order="0" width="106"/>
+		<column name="#" visible="true" order="1" width="22"/>
+		<column name="Data Type" visible="true" order="2" width="92"/>
+		<column name="Not Null" visible="true" order="3" width="68"/>
+		<column name="Auto Increment" visible="true" order="4" width="116"/>
+		<column name="Key" visible="true" order="5" width="36"/>
+		<column name="Default" visible="true" order="6" width="62"/>
+		<column name="Extra" visible="true" order="7" width="48"/>
+		<column name="Expression" visible="true" order="8" width="86"/>
+		<column name="Comment" visible="true" order="9" width="78"/>
+	</item>
+</items>
