@@ -1,0 +1,24 @@
+<th:block th:fragment>
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Suppliers</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+               aria-expanded="true">Storage</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Check supplies</a>
+                <a class="dropdown-item" href="#">Order More</a>
+                <a class="dropdown-item" th:href="@{/beers/runouts}">Runouts</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Price List</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Cash</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+    </ul>
+</th:block>

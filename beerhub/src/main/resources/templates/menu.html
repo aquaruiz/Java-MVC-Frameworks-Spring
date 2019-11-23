@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/head"></th:block>
+    <script>
+        function showHere(num) {
+            $('#' + 'beer' + num).toggle()
+        }
+    </script>
+</head>
+<body>
+<header class="sticky-top">
+    <th:block th:replace="fragments/header"></th:block>
+    <th:block th:include="fragments/nav"></th:block>
+</header>
+<main>
+    <div class="jumbotron">
+        <h2 class="text-capitalize text-xl-center">Beer List</h2>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+                <th scope="col">Details</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="beer, iter : ${beers}">
+                <tr class="align-items-center">
+                    <th scope="row" th:text="${iter.index + 1}">1</th>
+                    <td class="text " th:text="${beer.name}">Mark</td>
+                    <td class="text" th:text="|$${beer.sellPrice}|">Otto</td>
+                    <td>
+                        <button type="button" class="btn btn-secondary" th:attr="onclick=|showHere('${beer.id}')|">
+                            Click
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-dark text-white">Order one more</button>
+                    </td>
+                </tr>
+                <tr style="display: none" th:id="'beer' + ${beer.id}">
+                    <td colspan="5" style="text-align: center; color: wheat; background-color: lightslategray;"
+                        th:text="|${beer.description}|"></td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer>
+    <th:block th:include="fragments/footer"></th:block>
+</footer>
+</body>
+</html>

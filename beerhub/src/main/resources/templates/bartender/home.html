@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/head"></th:block>
+    <script>
+        $(document).ready(function () {
+            $('.dropdown-toggle').click(function (e) {
+                $('.dropdown-menu').toggle()
+            });
+        });
+    </script>
+</head>
+<body>
+<header class="sticky-top">
+    <th:block th:replace="fragments/header"></th:block>
+    <th:block th:include="fragments/nav"></th:block>
+</header>
+<main>
+    <div class="jumbotron">
+        <th:block th:include="fragments/bartender-nav"></th:block>
+    </div>
+</main>
+<footer>
+    <th:block th:include="fragments/footer"></th:block>
+</footer>
+</body>
+</html>

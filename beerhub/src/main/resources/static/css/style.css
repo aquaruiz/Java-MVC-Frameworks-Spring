@@ -1,0 +1,40 @@
+header, footer {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    color: lightgray;
+    font-size: 35px;
+}
+
+body {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    background-color: darkolivegreen;
+}
+
+.container {
+    padding: 25px;
+}
+
+.sticky-top>div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.row .btn {
+    font-size: x-large;
+    font-weight: bold;
+    margin: 0 4% 0 4%;
+    width: 25rem;
+    border-radius: 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.row .btn:hover {
+    font-size: xx-large;
+    font-weight: bolder;
+}
+
+.row {
+    height: 25rem;
+}
