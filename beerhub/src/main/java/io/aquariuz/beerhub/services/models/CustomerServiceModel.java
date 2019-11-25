@@ -1,14 +1,21 @@
-package io.aquariuz.beerhub.data.models;
+package io.aquariuz.beerhub.services.models;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
-public class Customer extends BaseEntity {
+@Getter
+@Setter
+@NoArgsConstructor
+public class CustomerServiceModel extends BaseServiceModel {
     private String username;
     private String password;
     private String email;
-    private Set<Role> authorities;
+    private Set<RoleServiceModel> authorities;
 
-    public Customer() {
+    public CustomerServiceModel() {
     }
 
     public String getUsername() {
@@ -35,11 +42,11 @@ public class Customer extends BaseEntity {
         this.email = email;
     }
 
-    public Set<Role> getAuthorities() {
+    public Set<RoleServiceModel> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Set<Role> authorities) {
+    public void setAuthorities(Set<RoleServiceModel> authorities) {
         this.authorities = authorities;
     }
 }

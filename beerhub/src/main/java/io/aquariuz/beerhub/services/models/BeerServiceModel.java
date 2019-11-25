@@ -9,8 +9,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BeerServiceModel {
-    private String id;
+public class BeerServiceModel extends BaseServiceModel {
     private String name;
     private double abv;
     private String brewer;

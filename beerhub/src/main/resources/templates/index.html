@@ -5,20 +5,29 @@
 </head>
 <body>
 <header class="sticky-top">
-    <th:block th:replace="fragments/header"></th:block>
-<!--    <th:block th:include="fragments/nav"></th:block>-->
+    <th:block th:include="fragments/nav-bar"></th:block>
 </header>
 <main>
-    <div class="container container-fluid ">
-        <div class="row justify-content-center">
-<!--            <a class="btn btn-primary btn-lg" th:href="@{/}">Beer Lover</a>-->
-            <a class="btn btn-primary btn-lg" th:href="@{/customers/home}">Beer Lover</a>
-            <a class="btn btn-primary btn-lg" th:href="@{/bartender/home}">Insider?</a>
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image-home"></div>
+            <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-3">
+                    <div class="container">
+                        <h1 class="text-black display-3">Welcome to BeerHub - a place for beer lovers.</h1>
+                        <hr class="bg-dark hr-2"/>
+                        <h1 class="text-black display-4"><a class="text-black" th:href="@{/customers/login}">Login</a> if you have an
+                            account.</h1>
+                        <h1 class="text-black display-4"><a class="text-black" th:href="@{/customers/register}">Register</a> if you
+                            don't.</h1>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </main>
 <footer>
-    <th:block th:include="fragments/footer"></th:block>
+    <th:block th:include="~{fragments/footer}"></th:block>
 </footer>
 </body>
 </html>
