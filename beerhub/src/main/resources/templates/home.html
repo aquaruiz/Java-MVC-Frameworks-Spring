@@ -7,6 +7,8 @@
     <title>Title</title>
 </head>
 <body>
-here index
+<div sec:authorize="hasAuthority('ROLE_CUSTOMER')">is customer</div>
+<div sec:authorize="hasAuthority('ROLE_ROOT')">is root</div>
+<a th:href="@{/logout}">Logout</a>
 </body>
 </html>
