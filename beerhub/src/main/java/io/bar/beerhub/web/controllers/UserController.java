@@ -31,7 +31,7 @@ public class UserController extends BaseController {
 
     @PostMapping("/register")
     public ModelAndView registerConfirm(@ModelAttribute UserRegisterModel model, ModelAndView modelAndView) {
-        if (!model.getConfirmPassword().endsWith(model.getPassword())){
+        if (!model.getConfirmPassword().equals(model.getPassword())){
             return view("register", modelAndView);
         }
 

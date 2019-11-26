@@ -16,17 +16,21 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/register").permitAll()
-                .antMatchers("/bartender/**").hasRole("BARTENDER") //??
+                .antMatchers("/", "/register", "/login").permitAll()
+                .antMatchers("/static/**", "/css/**", "/js/**", "/img/**").permitAll()
                 .anyRequest().authenticated()
+//                .antMatchers("/bartender/**").hasRole("BARTENDER") //??
+//                .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/home")
                 .and()
-                .logout().logoutSuccessUrl("/login/?logout").permitAll()
+                .logout().logoutSuccessUrl("/?logout").permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/unauthorized");
+
+        http.headers().disable();
     }
 }
