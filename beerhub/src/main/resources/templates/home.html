@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:include="~{fragments/head}"></th:block>
 </head>
 <body>
-<div sec:authorize="hasAuthority('ROLE_CUSTOMER')">is customer</div>
-<div sec:authorize="hasAuthority('ROLE_ROOT')">is root</div>
-<a th:href="@{/logout}">Logout</a>
+
+<header>
+    <th:block th:replace="~{fragments/header}"></th:block>
+</header>
+<nav>
+    <th:block th:replace="~{fragments/nav-bar}"></th:block>
+</nav>
+<main>
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image-home">
+            </div>
+            <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-3">
+                    <div class="container">
+                        <h1 class="text-black display-3">Welcome to BeerHub - a place for beer lovers.</h1>
+                        <hr class="bg-dark hr-2"/>
+                        <h1 class="text-black display-4"><a class="text-black" th:href="@{/login}">Login</a> if you have an
+                            account.</h1>
+                        <h1 class="text-black display-4"><a class="text-black" th:href="@{/register}">Register</a> if you
+                            don't.</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer  class="sticky-footer bg-black">
+    <th:block th:include="~{fragments/footer}"></th:block>
+</footer>
 </body>
 </html>
