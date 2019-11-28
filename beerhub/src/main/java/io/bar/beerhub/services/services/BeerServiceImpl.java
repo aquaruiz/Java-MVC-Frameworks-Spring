@@ -55,4 +55,15 @@ public class BeerServiceImpl implements BeerService {
                 .map(b -> this.modelMapper.map(b, BeerServiceModel.class))
                 .collect(Collectors.toUnmodifiableList());
     }
+
+    @Override
+    public void buyBeer(BeerServiceModel beerServiceModel, Long quantity) {
+        Beer beerToBuy = this.beerRepository.findById(beerServiceModel.getId()).get();
+        if (beerToBuy == null || !beerToBuy.getName().equals(beerServiceModel.getName())) {
+            return;
+        }
+
+        beerToBuy.setQuantity(beerToBuy.getQuantity() + quantity);
+        this.beerRepository.saveAndFlush(beerToBuy);
+    }
 }

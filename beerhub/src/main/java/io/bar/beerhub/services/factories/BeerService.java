@@ -12,4 +12,6 @@ public interface BeerService {
     List<BeerServiceModel> getAllBeers();
 
     List<BeerServiceModel> findAllRunoutsBeers(Long num);
+
+    void buyBeer(BeerServiceModel beerServiceModel, Long quantity);
 }

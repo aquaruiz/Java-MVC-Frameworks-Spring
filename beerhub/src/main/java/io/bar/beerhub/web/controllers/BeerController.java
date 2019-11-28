@@ -36,4 +36,7 @@ public class BeerController extends BaseController {
         this.beerService.save(beerServiceModel);
         return redirect("/");
     }
+
+
+
 }

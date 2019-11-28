@@ -3,6 +3,7 @@ package io.bar.beerhub.services.models;
 import java.math.BigDecimal;
 
 public class BeerServiceModel {
+    private String id;
     private String name;
     private double ABV;
     private String brewer;
@@ -13,6 +14,14 @@ public class BeerServiceModel {
     private Long quantity;
 
     public BeerServiceModel() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

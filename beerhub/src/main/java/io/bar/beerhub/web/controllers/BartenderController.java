@@ -2,12 +2,15 @@ package io.bar.beerhub.web.controllers;
 
 import io.bar.beerhub.services.factories.BeerService;
 import io.bar.beerhub.services.models.BeerServiceModel;
+import io.bar.beerhub.web.models.BeerBuyModel;
 import io.bar.beerhub.web.models.BeerListingModel;
 import io.bar.beerhub.web.models.BeerRunoutModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,6 +48,15 @@ public class BartenderController extends BaseController {
                 .map(b -> this.modelMapper.map(b, BeerRunoutModel.class))
                 .collect(Collectors.toUnmodifiableList());
         modelAndView.addObject("beers", runoutBeers);
+        modelAndView.addObject("title", "BEER HOME");
         return view("bartender/runouts", modelAndView);
+    }
+
+    @PostMapping("/buy")
+    public ModelAndView buyBeer(@ModelAttribute BeerBuyModel beerBuyModel, ModelAndView modelAndView) {
+        BeerServiceModel beerToBuy = this.modelMapper.map(beerBuyModel, BeerServiceModel.class);
+        Long quantity = beerBuyModel.getQuantity();
+        this.beerService.buyBeer(beerToBuy, quantity);
+        return redirect("runouts");
     }
 }
