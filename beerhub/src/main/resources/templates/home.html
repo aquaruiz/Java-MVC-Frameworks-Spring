@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
     <th:block th:include="~{fragments/head}"></th:block>
@@ -10,9 +11,10 @@
 <header>
     <th:block th:replace="~{fragments/header}"></th:block>
 </header>
-<nav>
-    <th:block th:replace="~{fragments/nav-bar}"></th:block>
+<nav class="navbar navbar-expand-md navbar-light fixed-top">
+    <th:block th:include="~{fragments/nav-bar}"></th:block>
 </nav>
+    <th:block sec:authorize="hasRole('ROLE_BARTENDER')" th:include="~{fragments/bartender-nav}"></th:block>
 <main>
     <div class="container-fluid">
         <div class="row no-gutter">
@@ -21,20 +23,25 @@
             <div class="col-md-8 col-lg-6">
                 <div class="login d-flex align-items-center py-3">
                     <div class="container">
-                        <h1 class="text-black display-3">Welcome to BeerHub - a place for beer lovers.</h1>
+                        <h1 class="text-black display-3">BeerHub bar</h1>
                         <hr class="bg-dark hr-2"/>
-                        <h1 class="text-black display-4"><a class="text-black" th:href="@{/login}">Login</a> if you have an
-                            account.</h1>
-                        <h1 class="text-black display-4"><a class="text-black" th:href="@{/register}">Register</a> if you
-                            don't.</h1>
+                        <h1 class="text-black display-4">Choose your <a class="text-black"
+                                                                        th:href="@{/login}">Waitress</a></h1>
+                        <h1 class="text-black display-4">or check the <a class="text-black"
+                                                                         th:href="@{/register}">Menu</a></h1>
                     </div>
+<!--                    <div sec:authorize="isAuthenticated()">-->
+<!--                        Authenticated user roles:-->
+<!--                        Logged user: <span sec:authentication="name"></span> |-->
+<!--                        Roles: <span sec:authentication="principal.authorities"></span>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
     </div>
 </main>
 
-<footer  class="sticky-footer bg-black">
+<footer class="sticky-footer bg-black">
     <th:block th:include="~{fragments/footer}"></th:block>
 </footer>
 </body>

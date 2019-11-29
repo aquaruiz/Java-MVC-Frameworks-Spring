@@ -1,47 +1,50 @@
 <th:block th:fragment="head" xmlns:th="http://www.thymeleaf.org"
           xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5 ">>
-    <nav class="navbar navbar-expand-md navbar-light fixed-top">
-        <div class="container">
-            <img th:src="@{/img/favicon.ico}" width="30" height="30" class="d-inline-block align-top"
-                 alt="BeerHub Logo">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+          xsi:schemaLocation="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5 ">
+    <div class="container">
+        <img th:src="@{/img/favicon.ico}" width="30" height="30" class="d-inline-block align-top"
+             alt="BeerHub Logo">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" th:href="@{/}">BeerHub
-                            <span class="sr-only">(current)</span>
-                        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/}">BeerHub
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
+            <th:block sec:authorize="isAnonymous()">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-item">
+                        <a class="nav-link navbar-right" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navbar-right" th:href="@{/register}">Register</a>
                     </li>
                 </ul>
-                <th:block sec:authorize="isAnonymous()">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item">
-                            <a class="nav-link navbar-right" th:href="@{/login}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link navbar-right" th:href="@{/register}">Register</a>
-                        </li>
-                    </ul>
-                </th:block>
-                <th:block sec:authorize="isAuthenticated()">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li sec:authentication="name"></li>
-                        <li class="nav-item">
-                            <a class="nav-link navbar-right" th:href="@{/logout}">Logout</a>
-                        </li>
-                        <!--                        <li class="nav-item">-->
-                        <!--                            <a class="nav-link navbar-right" th:href="@{/register}">Register</a>-->
-                        <!--                        </li>-->
-                    </ul>
-                </th:block>
-            </div>
+            </th:block>
+            <th:block sec:authorize="isAuthenticated()">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-item">
+                        <a class="nav-link navbar-right" th:href="@{/beers/menu}">Menu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navbar-right" th:href="@{/beers/menu}">Waitress</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navbar-right" th:href="@{/beers/menu}">Pay</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navbar-right" th:href="@{/logout}">Leave, <span
+                                sec:authentication="name"></span>?</a>
+                    </li>
+                </ul>
+            </th:block>
         </div>
-
-    </nav>
+    </div>
 </th:block>
