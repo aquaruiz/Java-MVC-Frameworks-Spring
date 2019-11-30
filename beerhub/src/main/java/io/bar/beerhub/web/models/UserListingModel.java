@@ -1,14 +1,15 @@
-package io.bar.beerhub.services.models;
+package io.bar.beerhub.web.models;
+
+import io.bar.beerhub.services.models.RoleServiceModel;
 
 import java.util.Set;
 
-public class UserServiceModel {
+public class UserListingModel {
     private String id;
     private String username;
-    private String password;
     private Set<RoleServiceModel> authorities;
 
-    public UserServiceModel() {
+    public UserListingModel() {
     }
 
     public String getId() {
@@ -25,14 +26,6 @@ public class UserServiceModel {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Set<RoleServiceModel> getAuthorities() {

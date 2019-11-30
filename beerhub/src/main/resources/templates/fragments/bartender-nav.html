@@ -20,6 +20,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Cash</a>
                 </li>
+                <li sec:authorize="hasRole('ROLE_ROOT')" class="nav-item">
+                    <a class="nav-link" th:href="@{/root/list-all-users}">List All Users</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </li>

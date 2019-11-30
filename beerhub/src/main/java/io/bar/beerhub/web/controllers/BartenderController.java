@@ -53,7 +53,7 @@ public class BartenderController extends BaseController {
     }
 
     @PostMapping("/buy")
-    public ModelAndView buyBeer(@ModelAttribute BeerBuyModel beerBuyModel, ModelAndView modelAndView) {
+    public ModelAndView buyBeer(@ModelAttribute BeerBuyModel beerBuyModel) {
         BeerServiceModel beerToBuy = this.modelMapper.map(beerBuyModel, BeerServiceModel.class);
         Long quantity = beerBuyModel.getQuantity();
         this.beerService.buyBeer(beerToBuy, quantity);
