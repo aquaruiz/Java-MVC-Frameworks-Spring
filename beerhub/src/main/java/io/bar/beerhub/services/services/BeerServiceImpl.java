@@ -2,6 +2,7 @@ package io.bar.beerhub.services.services;
 
 import io.bar.beerhub.data.models.Beer;
 import io.bar.beerhub.data.repositories.BeerRepository;
+import io.bar.beerhub.errors.BeerNotFoundException;
 import io.bar.beerhub.services.factories.BeerService;
 import io.bar.beerhub.services.models.BeerServiceModel;
 import org.modelmapper.ModelMapper;
@@ -60,7 +61,7 @@ public class BeerServiceImpl implements BeerService {
     public void buyBeer(BeerServiceModel beerServiceModel, Long quantity) {
         Beer beerToBuy = this.beerRepository.findById(beerServiceModel.getId()).get();
         if (beerToBuy == null || !beerToBuy.getName().equals(beerServiceModel.getName())) {
-            return;
+            throw new BeerNotFoundException("Beer not found");
         }
 
         beerToBuy.setQuantity(beerToBuy.getQuantity() + quantity);

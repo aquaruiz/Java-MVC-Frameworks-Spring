@@ -1,5 +1,6 @@
 package io.bar.beerhub.web.controllers;
 
+import io.bar.beerhub.errors.BeerNotFoundException;
 import io.bar.beerhub.services.factories.BeerService;
 import io.bar.beerhub.services.models.BeerServiceModel;
 import io.bar.beerhub.web.models.BeerBuyModel;
@@ -8,10 +9,7 @@ import io.bar.beerhub.web.models.BeerRunoutModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -58,5 +56,12 @@ public class BartenderController extends BaseController {
         Long quantity = beerBuyModel.getQuantity();
         this.beerService.buyBeer(beerToBuy, quantity);
         return redirect("runouts");
+    }
+
+    @ExceptionHandler(BeerNotFoundException.class)
+    public ModelAndView handleException(BeerNotFoundException exception) {
+        ModelAndView modelAndView = new ModelAndView("custom-error");
+        modelAndView.addObject("message", exception.getMessage());
+        return modelAndView;
     }
 }
