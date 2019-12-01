@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.util.HashMap;
 
 @Service
-public class ClaudinaryServiceImpl implements CloudinaryService {
+public class CloudinaryServiceImpl implements CloudinaryService {
     private final Cloudinary cloudinary;
 
-    public ClaudinaryServiceImpl(Cloudinary cloudinary) {
+    public CloudinaryServiceImpl(Cloudinary cloudinary) {
         this.cloudinary = cloudinary;
     }
 
