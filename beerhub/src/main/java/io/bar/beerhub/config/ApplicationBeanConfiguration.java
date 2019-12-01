@@ -1,5 +1,7 @@
 package io.bar.beerhub.config;
 
+import io.bar.beerhub.util.FileUtilImpl;
+import io.bar.beerhub.util.factory.FileUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,5 +18,10 @@ public class ApplicationBeanConfiguration {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public FileUtil fileUtil() {
+        return new FileUtilImpl();
     }
 }
