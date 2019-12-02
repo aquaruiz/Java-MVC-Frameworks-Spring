@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface LogRepository extends JpaRepository<Log, String> {
     List<Log> findAllByUsername(String username);
+
+    List<Log> findAllByOrderByTimeDesc();
 }

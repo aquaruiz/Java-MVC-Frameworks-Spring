@@ -1,10 +1,13 @@
 package io.bar.beerhub.web.controllers;
 
+import io.bar.beerhub.services.factories.LogService;
 import io.bar.beerhub.services.factories.RoleService;
 import io.bar.beerhub.services.factories.UserService;
+import io.bar.beerhub.services.models.LogServiceModel;
 import io.bar.beerhub.services.models.RoleServiceModel;
 import io.bar.beerhub.services.models.UserServiceModel;
-import io.bar.beerhub.web.models.BeerBuyModel;
+import io.bar.beerhub.web.annotations.PageTitle;
+import io.bar.beerhub.web.models.LogViewModel;
 import io.bar.beerhub.web.models.RoleListingModel;
 import io.bar.beerhub.web.models.UserChangeRoleModel;
 import io.bar.beerhub.web.models.UserListingModel;
@@ -23,11 +26,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/root")
 public class RootController extends BaseController{
     private final UserService userService;
+    private final LogService logService;
     private final ModelMapper modelMapper;
     private final RoleService roleService;
 
-    public RootController(UserService userService, ModelMapper modelMapper, RoleService roleService) {
+    public RootController(UserService userService, LogService logService, ModelMapper modelMapper, RoleService roleService) {
         this.userService = userService;
+        this.logService = logService;
         this.modelMapper = modelMapper;
         this.roleService = roleService;
     }
@@ -56,5 +61,18 @@ public class RootController extends BaseController{
        this.userService.addDelUserRole(userChangeRoleModel);
         return redirect("list-all-users");
 
+    }
+
+    @GetMapping("/list-all-logs")
+    @PageTitle("Logs records")
+    public ModelAndView listAllLogs(ModelAndView modelAndView) {
+        List<LogServiceModel> logs = this.logService.getAllLogsOrderByDate();
+        List<LogViewModel> logListing = logs
+                .stream()
+                .map(l -> this.modelMapper.map(l, LogViewModel.class))
+                .collect(Collectors.toUnmodifiableList());
+        modelAndView.addObject("logs", logListing);
+
+        return view("root/list-all-logs", modelAndView);
     }
 }
