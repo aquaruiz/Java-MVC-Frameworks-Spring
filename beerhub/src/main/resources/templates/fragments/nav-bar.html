@@ -31,13 +31,13 @@
             <th:block sec:authorize="isAuthenticated()">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="nav-item">
-                        <a class="nav-link navbar-right" th:href="@{/beers/menu}">Menu</a>
+                        <a class="nav-link navbar-right" th:href="@{/bar/menu}">Menu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link navbar-right" th:href="@{/beers/menu}">Waitress</a>
+                        <a class="nav-link navbar-right" th:href="@{/waitress/all}">Waitress</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link navbar-right" th:href="@{/beers/menu}">Pay</a>
+                        <a class="nav-link navbar-right" th:href="@{/bar/order}">Pay</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link navbar-right" th:href="@{/logout}">Leave, <span

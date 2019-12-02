@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface BeerRepository extends JpaRepository <Beer, String> {
     List<Beer> findAllByQuantityLessThan(long num);
+
+    List<Beer> findAllByQuantityGreaterThan(Long num);
 }

@@ -58,6 +58,14 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
+    public List<BeerServiceModel> findAllBeersOnStock() {
+        return this.beerRepository.findAllByQuantityGreaterThan(0L)
+                .stream()
+                .map(b -> this.modelMapper.map(b, BeerServiceModel.class))
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
     public void buyBeer(BeerServiceModel beerServiceModel, Long quantity) {
         Beer beerToBuy = this.beerRepository.findById(beerServiceModel.getId()).get();
         if (beerToBuy == null || !beerToBuy.getName().equals(beerServiceModel.getName())) {

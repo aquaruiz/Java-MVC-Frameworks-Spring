@@ -36,13 +36,4 @@ public class BeerController extends BaseController {
         this.beerService.save(beerServiceModel);
         return redirect("/");
     }
-
-    // small pics only
-// <form th:action="@{/avater/create}" th:method="POST" enctype="multipart/form-data">
-//        <input type="file" name="image"/>
-//        <button type="submit">Upload</button>
-// </form>
-
-    // inside controller
-    // avatar.setImageUrl(cloudinaryService.upload(uploadModel.getImage()));
 }

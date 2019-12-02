@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+
+<header>
+    <th:block th:replace="~{fragments/header}"></th:block>
+</header>
+<nav class="navbar navbar-expand-md navbar-light">
+    <th:block th:include="~{fragments/nav-bar}"></th:block>
+</nav>
+<th:block sec:authorize="hasRole('ROLE_BARTENDER')" th:include="~{fragments/bartender-nav}"></th:block>
+<main>
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image-home">
+            </div>
+            <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-3">
+                    <div class="container">
+                        <h2 class="text-black display-4">Hello customer: <span sec:authentication="name">!</span></h2>
+                        <hr class="bg-dark hr-2"/>
+                        <h3 class="text-black display-4">Welcome to BeerHub bar</h3>
+                        <h3 class="text-black display-4">Your table number is <span th:value="@{order.id}">0000</span>.</h3>
+                        <h3 class="text-black display-4">Please choose your <a class="text-black" th:href="@{/waitress/all}">Waitress</a> tonight</h3>
+                        <h3 class="text-black display-4">and then check out the <a class="text-black"
+                                                                         th:href="@{/bar/menu}">Menu</a></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="sticky-footer bg-black">
+    <th:block th:include="~{fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

@@ -72,6 +72,7 @@ public class RootController extends BaseController{
                 .map(l -> this.modelMapper.map(l, LogViewModel.class))
                 .collect(Collectors.toUnmodifiableList());
         modelAndView.addObject("logs", logListing);
+        modelAndView.addObject("title", "Logs");
 
         return view("root/list-all-logs", modelAndView);
     }
