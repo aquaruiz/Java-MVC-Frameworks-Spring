@@ -50,6 +50,11 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
+    public BeerServiceModel findOneById(String beerId) {
+        return this.modelMapper.map(this.beerRepository.findById(beerId).get(), BeerServiceModel.class);
+    }
+
+    @Override
     public List<BeerServiceModel> findAllRunoutsBeers(Long num) {
         return this.beerRepository.findAllByQuantityLessThan(num)
                 .stream()

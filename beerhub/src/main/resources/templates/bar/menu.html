@@ -19,6 +19,9 @@
 <main>
     <div class="jumbotron">
         <h2 class="text-capitalize text-xl-center">Beer List</h2>
+        <th:block th:if="${order}">
+            <h2 class="text-black display-4">You just ordered: <span th:value="@{order.name}">!</span></h2>
+        </th:block>
         <table class="table table-hover">
             <thead>
             <tr>
@@ -39,9 +42,12 @@
                             Click
                         </button>
                     </td>
-                    <td>
-                        <button type="button" class="btn btn-dark text-white">Order one more</button>
-                    </td>
+                    <form class="mx-auto w-25" th:method="post" th:action="@{/bar/order}">
+                        <td>
+                            <input type="hidden" name="beerId" th:value="${beer.id}" />
+                            <button type="submit" class="btn btn-dark text-white">Order one more</button>
+                        </td>
+                    </form>
                 </tr>
                 <tr style="display: none" th:id="'beer' + ${beer.id}">
                     <td colspan="5" style="text-align: center; color: wheat; background-color: lightslategray;"
@@ -53,7 +59,7 @@
     </div>
 </main>
 
-<footer  class="sticky-footer bg-black">
+<footer class="sticky-footer bg-black">
     <th:block th:include="~{fragments/footer}"></th:block>
 </footer>
 </body>

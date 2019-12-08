@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:include="~{fragments/head}"></th:block>
+    <script>
+        function showHere(num) {
+            $('#' + 'beer' + num).toggle()
+        }
+    </script>
 </head>
 <body>
+<header class="sticky-top">
+    <th:block th:replace="~{fragments/header}"></th:block>
+    <th:block th:include="~{fragments/nav-bar}"></th:block>
+</header>
 
+<main>
+    <div class="jumbotron">
+        <h2 class="text-capitalize text-xl-center">Ready to Leave?</h2>
+        <p class="text">Your waitress name was <span th:text="${paycheck.lastWaitressName}"></span>.</p>
+        <p class="text">Your have <span th:text="${paycheck.ordersNum}"></span> open order(s).</p>
+        <p class="text">Your have drunk <span th:text="${paycheck.beersNum}"></span> beers.</p>
+        <p class="text">Your bill is $<span
+                th:text="${#numbers.formatDecimal(paycheck.bill, 1, 'COMMA', 2, 'POINT')}"></span> plus tips $<span
+                th:text="${#numbers.formatDecimal(paycheck.tips, 1, 'COMMA', 2, 'POINT')}"></span>.</p>
+        <p class="text">Total: $<span
+                th:text="${#numbers.formatDecimal(paycheck.bill + paycheck.tips, 1, 'COMMA', 2, 'POINT')}"></span>.</p>
+        <form method="post" action="/bar/pay">
+            <input type="hidden" name="bill" th:value="${paycheck.bill + paycheck.tips}">
+            <input type="hidden" name="user" th:value="${session.user.name}">
+            <button type="submit" class="button">Pay</button>
+        </form>
+    </div>
+</main>
+
+<footer class="sticky-footer bg-black">
+    <th:block th:include="~{fragments/footer}"></th:block>
+</footer>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package io.bar.beerhub.web.controllers;
 
 import io.bar.beerhub.services.factories.LogService;
+import io.bar.beerhub.services.factories.OrderService;
 import io.bar.beerhub.services.factories.WaitressService;
 import io.bar.beerhub.services.models.LogServiceModel;
 import io.bar.beerhub.services.models.WaitressServiceModel;
@@ -23,11 +24,13 @@ import java.util.stream.Collectors;
 public class WaitressController extends BaseController {
     private final ModelMapper modelMapper;
     private final WaitressService waitressService;
+    private final OrderService orderService;
     private final LogService logService;
 
-    public WaitressController(ModelMapper modelMapper, WaitressService waitressService, LogService logService) {
+    public WaitressController(ModelMapper modelMapper, WaitressService waitressService, OrderService orderService, LogService logService) {
         this.modelMapper = modelMapper;
         this.waitressService = waitressService;
+        this.orderService = orderService;
         this.logService = logService;
     }
 
@@ -81,6 +84,14 @@ public class WaitressController extends BaseController {
                         .map(w -> this.modelMapper.map(w, WaitressDetailsViewModel.class))
                         .collect(Collectors.toList())
         );
+
         return this.view("/waitress/all", modelAndView);
+    }
+
+    @PostMapping("/pick")
+    public ModelAndView pickWaitress(@ModelAttribute WaitressViewModel waitressViewModel, ModelAndView modelAndView, Principal principal) {
+        WaitressServiceModel chosen = this.waitressService.findById(waitressViewModel.getId());
+        this.orderService.bookWaitress(waitressViewModel.getId(), principal.getName());
+        return this.redirect("/bar/menu");
     }
 }

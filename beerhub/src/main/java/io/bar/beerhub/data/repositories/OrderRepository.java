@@ -11,4 +11,6 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     List<Order> getAllByCustomer(User customer);
 
     List<Waitress> getAllByWaitress(Waitress waitress);
+
+    Order getByCustomer(User customer);
 }

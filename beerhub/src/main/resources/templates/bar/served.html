@@ -23,14 +23,14 @@
             <div class="col-md-8 col-lg-6">
                 <div class="login d-flex align-items-center py-3">
                     <div class="container">
-                        <h2 class="text-black display-4">Hello customer: <span sec:authentication="name">!</span></h2>
+                        <h2 class="text-black display-4">You just ordered one more<span th:value="@{beer.name}">!</span></h2>
                         <hr class="bg-dark hr-2"/>
-                        <h3 class="text-black display-4">Welcome to BeerHub bar</h3>
-                        <h3 class="text-black display-4">Your table number is <span th:value="@{order.id}">0000</span>.</h3>
-                        <h3 class="text-black display-4">Please choose your <a class="text-black" th:href="@{/waitress/all}">Waitress</a> tonight</h3>
-                        <h3 class="text-black display-4">and then check out the <a class="text-black"
-                                                                                   th:href="@{/bar/menu}">Menu</a></h3>
+                        <h3 class="text-black display-4"><a class="text-black"
+                                                            th:href="@{/bar/menu}">Order More or</a></h3>
+                        <h3 class="text-black display-4"><a class="text-black"
+                                                            th:href="@{/bar/paycheck}">Pay</a> and leave</h3>
                     </div>
+
                 </div>
             </div>
         </div>

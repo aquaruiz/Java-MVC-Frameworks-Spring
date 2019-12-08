@@ -1,7 +1,5 @@
 package io.bar.beerhub.web.models;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class WaitressDetailsViewModel {
     private String id;
     private String name;

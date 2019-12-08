@@ -1,12 +1,17 @@
 package io.bar.beerhub.web.controllers;
 
 import io.bar.beerhub.services.factories.BeerService;
+import io.bar.beerhub.services.factories.OrderService;
 import io.bar.beerhub.services.models.BeerServiceModel;
+import io.bar.beerhub.services.models.PaycheckServiceModel;
 import io.bar.beerhub.web.annotations.PageTitle;
 import io.bar.beerhub.web.models.BeerViewModel;
+import io.bar.beerhub.web.models.OrderModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,10 +23,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/bar")
 public class OrderController extends BaseController {
     private final BeerService beerService;
+    private final OrderService orderService;
     private final ModelMapper modelMapper;
 
-    public OrderController(BeerService beerService, ModelMapper modelMapper) {
+    public OrderController(BeerService beerService, OrderService orderService, ModelMapper modelMapper) {
         this.beerService = beerService;
+        this.orderService = orderService;
         this.modelMapper = modelMapper;
     }
 
@@ -42,5 +49,25 @@ public class OrderController extends BaseController {
                 .collect(Collectors.toUnmodifiableList());
         modelAndView.addObject("beers", beerListing);
         return view("bar/menu", modelAndView);
+    }
+
+    @PostMapping("/order")
+    public ModelAndView orderOneMore(@ModelAttribute OrderModel orderModel, ModelAndView modelAndView, Principal principal) {
+        this.orderService.orderBeer(orderModel.getBeerId(), 1L, principal.getName());
+        BeerViewModel beerViewModel = this.modelMapper.map(this.beerService.findOneById(orderModel.getBeerId()), BeerViewModel.class);
+        modelAndView.addObject("order", beerViewModel);
+        return view("/bar/served", modelAndView);
+    }
+
+    @GetMapping("/paycheck")
+    public ModelAndView callPayCheck(ModelAndView modelAndView, Principal principal) {
+        PaycheckServiceModel paycheckModel = this.orderService.finalizePayCheck(principal.getName());
+        modelAndView.addObject("paycheck", paycheckModel);
+        return  this.view("bar/paycheck", modelAndView);
+    }
+
+    @PostMapping("/pay")
+    public ModelAndView finishPaycheck(@ModelAttribute ModelAndView modelAndView, Principal principal){
+        return redirect("/home");
     }
 }
