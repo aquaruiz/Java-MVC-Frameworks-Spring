@@ -29,7 +29,7 @@
                 th:text="${#numbers.formatDecimal(paycheck.bill + paycheck.tips, 1, 'COMMA', 2, 'POINT')}"></span>.</p>
         <form method="post" action="/bar/pay">
             <input type="hidden" name="bill" th:value="${paycheck.bill + paycheck.tips}">
-            <input type="hidden" name="user" th:value="${session.user.name}">
+            <input type="hidden" name="user" th:value="${session.user}">
             <button type="submit" class="button">Pay</button>
         </form>
     </div>

@@ -11,4 +11,6 @@ public interface OrderService {
     PaycheckServiceModel finalizePayCheck(String customerName);
 
     Order getCustomerCurrentOrder(String username);
+
+    void closeCustomerOrders(String name);
 }

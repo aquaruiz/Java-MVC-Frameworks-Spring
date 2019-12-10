@@ -4,6 +4,7 @@ import io.bar.beerhub.data.models.Role;
 import io.bar.beerhub.data.models.User;
 import io.bar.beerhub.data.repositories.RoleRepository;
 import io.bar.beerhub.data.repositories.UserRepository;
+import io.bar.beerhub.services.factories.CashService;
 import io.bar.beerhub.services.factories.RoleService;
 import io.bar.beerhub.services.factories.UserService;
 import io.bar.beerhub.services.models.UserServiceModel;
@@ -25,14 +26,16 @@ public class UserServiceImpl implements UserService {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final CashService cashService;
     private final RoleService roleService;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository, RoleService roleService, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository, CashService cashService, RoleService roleService, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.cashService = cashService;
         this.roleService = roleService;
         this.modelMapper = modelMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -49,6 +52,7 @@ public class UserServiceImpl implements UserService {
 
         if (this.userRepository.count() == 0) {
             this.roleService.seedRolesInDb();
+            this.cashService.initCashInDb();
 
             user.setAuthorities(new HashSet<>(this.roleRepository.findAll()));
         } else {

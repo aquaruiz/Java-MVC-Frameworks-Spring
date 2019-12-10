@@ -100,8 +100,8 @@ public class OrderServiceImpl implements OrderService {
         for (Order order : orders) {
                 Waitress waitress = order.getWaitress();
                 waitressName = waitress.getName();
-            if (!order.isClosed()) {
 
+            if (!order.isClosed()) {
                 List<Beer> currentBeers = order.getBeers();
 
                 BigDecimal currentBill = new BigDecimal(0);
@@ -139,5 +139,17 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return customerOrder;
+    }
+
+    @Override
+    public void closeCustomerOrders(String name) {
+        User customer = this.userRepository.findByUsername(name);
+        List<Order> orders = this.orderRepository.getAllByCustomer(customer);
+
+        for(Order order : orders) {
+            order.setClosed(true);
+        }
+
+        this.orderRepository.saveAll(orders);
     }
 }
