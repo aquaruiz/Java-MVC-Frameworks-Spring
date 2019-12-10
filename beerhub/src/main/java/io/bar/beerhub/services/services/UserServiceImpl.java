@@ -4,6 +4,7 @@ import io.bar.beerhub.data.models.Role;
 import io.bar.beerhub.data.models.User;
 import io.bar.beerhub.data.repositories.RoleRepository;
 import io.bar.beerhub.data.repositories.UserRepository;
+import io.bar.beerhub.errors.UserRegistrationException;
 import io.bar.beerhub.services.factories.CashService;
 import io.bar.beerhub.services.factories.RoleService;
 import io.bar.beerhub.services.factories.UserService;
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(UserServiceModel userServiceModel) {
+    public void register(UserServiceModel userServiceModel) {
         User user = this.modelMapper.map(userServiceModel, User.class);
 
         if (this.userRepository.count() == 0) {
@@ -60,7 +61,13 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return this.userRepository.saveAndFlush(user);
+
+
+        try {
+            this.userRepository.saveAndFlush(user);
+        } catch (Exception ignored) {
+            throw new UserRegistrationException("Cannot register user with username " + user.getUsername());
+        }
     }
 
     @Override

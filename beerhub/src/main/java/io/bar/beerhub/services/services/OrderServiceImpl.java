@@ -43,54 +43,60 @@ public class OrderServiceImpl implements OrderService {
         User savedUser = this.userRepository.findByUsername(customerName);
         Beer orderedBeer = this.beerRepository.findById(id).get();
 
-        Order customerOrder = this.orderRepository.getByCustomer(savedUser);
+        List<Order> customerOrders = this.orderRepository.getAllOpenOrdersByCustomer(savedUser);
 
-        if (customerOrder == null || customerOrder.isClosed()) {
-            customerOrder = new Order();
-            customerOrder.setCustomer(savedUser);
+        Order currentOrder = null;
+
+        if (customerOrders.size() > 0) {
+            currentOrder = customerOrders.get(0);
+        } else {
+            currentOrder = new Order();
+            currentOrder.setCustomer(savedUser);
+
             List<Beer> beers = new ArrayList<>();
 
             for (int i = 0; i < quantity; i++) {
                 beers.add(orderedBeer);
             }
 
-            customerOrder.setBeers(beers);
-            customerOrder.setClosed(false);
-        } else {
-            for (int i = 0; i < quantity; i++) {
-                customerOrder.getBeers().add(orderedBeer);
-            }
-        }
-        if (customerOrder.getWaitress() == null) {
-            Waitress myWaitress = this.waitressRepository.findAll().get(1);
-            customerOrder.setWaitress(myWaitress);
+            currentOrder.setBeers(beers);
+            currentOrder.setClosed(false);
         }
 
-        this.orderRepository.saveAndFlush(customerOrder);
+        if (currentOrder.getWaitress() == null) {
+            Waitress myWaitress = this.waitressRepository.findAllByOrderByTipsRateAsc().get(0);
+            currentOrder.setWaitress(myWaitress);
+        }
+
+        this.orderRepository.saveAndFlush(currentOrder);
     }
 
     @Override
     public void bookWaitress(String waitressId, String customerName) {
         User savedUser = this.userRepository.findByUsername(customerName);
-        Order customerOrder = this.orderRepository.getByCustomer(savedUser);
+        List<Order> customerOrders = this.orderRepository.getAllOpenOrdersByCustomer(savedUser);
 
-        Waitress chosenWaitress = this.waitressRepository.findById(waitressId).get();
 
-        if (customerOrder == null || customerOrder.isClosed()) {
-            customerOrder = new Order();
-            customerOrder.setCustomer(savedUser);
+        Order currentOrder = null;
 
-            customerOrder.setWaitress(chosenWaitress);
+        if (customerOrders.size() > 0) {
+            currentOrder = customerOrders.get(0);
+        } else {
+            currentOrder = new Order();
+            currentOrder.setCustomer(savedUser);
         }
 
-        this.orderRepository.saveAndFlush(customerOrder);
+        Waitress chosenWaitress = this.waitressRepository.findById(waitressId).get();
+        currentOrder.setWaitress(chosenWaitress);
+
+        this.orderRepository.saveAndFlush(currentOrder);
     }
 
     @Override
     public PaycheckServiceModel finalizePayCheck(String customerName) {
         User customer = this.userRepository.findByUsername(customerName);
         List<Order> orders = this.orderRepository.getAllByCustomer(customer);
-        long ordersNum = orders.size();
+        long ordersNum = 0;
         long beersNum = 0;
 
         BigDecimal bill = BigDecimal.valueOf(0);
@@ -98,10 +104,11 @@ public class OrderServiceImpl implements OrderService {
         String waitressName = "";
 
         for (Order order : orders) {
-                Waitress waitress = order.getWaitress();
-                waitressName = waitress.getName();
+            Waitress waitress = order.getWaitress();
+            waitressName = waitress.getName();
 
             if (!order.isClosed()) {
+                ordersNum++;
                 List<Beer> currentBeers = order.getBeers();
 
                 BigDecimal currentBill = new BigDecimal(0);
@@ -146,7 +153,7 @@ public class OrderServiceImpl implements OrderService {
         User customer = this.userRepository.findByUsername(name);
         List<Order> orders = this.orderRepository.getAllByCustomer(customer);
 
-        for(Order order : orders) {
+        for (Order order : orders) {
             order.setClosed(true);
         }
 

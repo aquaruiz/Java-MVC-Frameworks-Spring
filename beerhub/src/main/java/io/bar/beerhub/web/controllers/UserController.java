@@ -35,8 +35,9 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/register")
-    public ModelAndView getRegister() {
-        return view("/register");
+    public ModelAndView getRegister(ModelAndView modelAndView) {
+        modelAndView.addObject("title", "Register Form");
+        return view("/register", modelAndView);
     }
 
     @PostMapping("/register")

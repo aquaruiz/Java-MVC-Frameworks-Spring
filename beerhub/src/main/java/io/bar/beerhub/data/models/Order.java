@@ -3,7 +3,7 @@ package io.bar.beerhub.data.models;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+@Entity(name = "orders")
 @Table(name = "orders")
 public class Order extends BaseEntity {
     private User customer;
