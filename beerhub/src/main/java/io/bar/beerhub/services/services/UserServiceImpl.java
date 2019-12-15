@@ -82,7 +82,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addDelUserRole(UserChangeRoleModel userChangeRoleModel) {
-//        userChangeRoleModel = escapeCharsUtil.escapeChars(userChangeRoleModel);
 
         User user = this.userRepository.findById(userChangeRoleModel.getUserId()).get();
         Role role = this.roleRepository.findByAuthority(userChangeRoleModel.getRoleName());

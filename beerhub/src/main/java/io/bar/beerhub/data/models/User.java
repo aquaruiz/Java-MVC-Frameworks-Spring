@@ -17,7 +17,7 @@ public class User extends BaseEntity implements UserDetails {
     public User() {
     }
 
-    @Column
+    @Column(unique = true)
     public String getUsername() {
         return username;
     }

@@ -1,5 +1,6 @@
 package io.bar.beerhub.web.controllers;
 
+import io.bar.beerhub.errors.UserRegistrationException;
 import io.bar.beerhub.services.factories.LogService;
 import io.bar.beerhub.services.factories.UserService;
 import io.bar.beerhub.services.models.LogServiceModel;
@@ -42,11 +43,20 @@ public class UserController extends BaseController {
 
     @PostMapping("/register")
     public ModelAndView registerConfirm(@ModelAttribute UserRegisterModel model, ModelAndView modelAndView) {
-        if (!model.getConfirmPassword().equals(model.getPassword())){
+        if (!model.getConfirmPassword().equals(model.getPassword())) {
+            modelAndView.addObject("model", model);
+            modelAndView.addObject("error", "Passwords do not match.");
             return view("register", modelAndView);
         }
 
-        this.userService.register(this.modelMapper.map(model, UserServiceModel.class));
+//        try {
+            this.userService.register(this.modelMapper.map(model, UserServiceModel.class));
+//        } catch (UserRegistrationException ex) {
+//            modelAndView.addObject("model", model);
+//            modelAndView.addObject("error", "Cannot register this user - duplicate username");
+//            return view("register", modelAndView);
+//        }
+
         return redirect("/home");
     }
 

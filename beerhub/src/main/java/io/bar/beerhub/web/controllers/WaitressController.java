@@ -5,6 +5,7 @@ import io.bar.beerhub.services.factories.OrderService;
 import io.bar.beerhub.services.factories.WaitressService;
 import io.bar.beerhub.services.models.LogServiceModel;
 import io.bar.beerhub.services.models.WaitressServiceModel;
+import io.bar.beerhub.util.factory.EscapeCharsUtil;
 import io.bar.beerhub.web.annotations.PageTitle;
 import io.bar.beerhub.web.models.WaitressDetailsViewModel;
 import io.bar.beerhub.web.models.WaitressViewModel;
@@ -23,12 +24,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/waitress")
 public class WaitressController extends BaseController {
     private final ModelMapper modelMapper;
+    private final EscapeCharsUtil escapeCharsUtil;
     private final WaitressService waitressService;
     private final OrderService orderService;
     private final LogService logService;
 
-    public WaitressController(ModelMapper modelMapper, WaitressService waitressService, OrderService orderService, LogService logService) {
+    public WaitressController(ModelMapper modelMapper, EscapeCharsUtil escapeCharsUtil, WaitressService waitressService, OrderService orderService, LogService logService) {
         this.modelMapper = modelMapper;
+        this.escapeCharsUtil = escapeCharsUtil;
         this.waitressService = waitressService;
         this.orderService = orderService;
         this.logService = logService;
@@ -49,12 +52,13 @@ public class WaitressController extends BaseController {
                                     ModelAndView modelAndView,
                                     @ModelAttribute(name = "waitress") @Valid WaitressViewModel waitressViewModel) {
 
+        waitressViewModel = escapeCharsUtil.escapeChars(waitressViewModel);
         WaitressServiceModel waitressServiceModel = this.modelMapper.map(waitressViewModel, WaitressServiceModel.class);
         this.logService.recLogInDb(new LogServiceModel()
                                    {{
                                         setUsername(principal.getName());
                                         setTime(LocalDateTime.now());
-                                        setDescription("Added new waitress: " + waitressViewModel.getName());
+                                        setDescription("Added new waitress: " + waitressServiceModel.getName());
                                    }}
         );
 

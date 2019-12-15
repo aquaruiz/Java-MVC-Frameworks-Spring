@@ -2,6 +2,7 @@ package io.bar.beerhub.web.controllers;
 
 import io.bar.beerhub.services.factories.BeerService;
 import io.bar.beerhub.services.models.BeerServiceModel;
+import io.bar.beerhub.util.factory.EscapeCharsUtil;
 import io.bar.beerhub.web.models.BeerCreateModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,12 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/beers")
 public class BeerController extends BaseController {
     private final BeerService beerService;
+    private final EscapeCharsUtil escapeCharsUtil;
     private final ModelMapper modelMapper;
 
-    public BeerController(BeerService beerService, ModelMapper modelMapper) {
+    public BeerController(BeerService beerService, EscapeCharsUtil escapeCharsUtil, ModelMapper modelMapper) {
         this.beerService = beerService;
+        this.escapeCharsUtil = escapeCharsUtil;
         this.modelMapper = modelMapper;
     }
 
@@ -32,6 +35,8 @@ public class BeerController extends BaseController {
 
     @PostMapping("/create")
     public ModelAndView createBeer(@ModelAttribute BeerCreateModel beerCreateModel, HttpSession session) {
+        beerCreateModel = escapeCharsUtil.escapeChars(beerCreateModel);
+
         BeerServiceModel beerServiceModel = this.modelMapper.map(beerCreateModel, BeerServiceModel.class);
         this.beerService.save(beerServiceModel);
         return redirect("/");
