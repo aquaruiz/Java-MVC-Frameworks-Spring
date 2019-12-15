@@ -1,5 +1,6 @@
 package io.bar.beerhub.services.services;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import io.bar.beerhub.data.models.Beer;
 import io.bar.beerhub.data.models.Order;
 import io.bar.beerhub.data.models.User;

@@ -9,6 +9,7 @@ import io.bar.beerhub.services.factories.CashService;
 import io.bar.beerhub.services.factories.RoleService;
 import io.bar.beerhub.services.factories.UserService;
 import io.bar.beerhub.services.models.UserServiceModel;
+import io.bar.beerhub.util.factory.EscapeCharsUtil;
 import io.bar.beerhub.web.models.UserChangeRoleModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +31,17 @@ public class UserServiceImpl implements UserService {
     private final CashService cashService;
     private final RoleService roleService;
     private final ModelMapper modelMapper;
+    private final EscapeCharsUtil escapeCharsUtil;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository, CashService cashService, RoleService roleService, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository, CashService cashService, RoleService roleService, ModelMapper modelMapper, EscapeCharsUtil escapeCharsUtil, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.cashService = cashService;
         this.roleService = roleService;
         this.modelMapper = modelMapper;
+        this.escapeCharsUtil = escapeCharsUtil;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -49,8 +52,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(UserServiceModel userServiceModel) {
+        userServiceModel = escapeCharsUtil.escapeChars(userServiceModel);
         User user = this.modelMapper.map(userServiceModel, User.class);
-
         if (this.userRepository.count() == 0) {
             this.roleService.seedRolesInDb();
             this.cashService.initCashInDb();
@@ -61,7 +64,6 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-
 
         try {
             this.userRepository.saveAndFlush(user);
@@ -80,6 +82,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addDelUserRole(UserChangeRoleModel userChangeRoleModel) {
+//        userChangeRoleModel = escapeCharsUtil.escapeChars(userChangeRoleModel);
+
         User user = this.userRepository.findById(userChangeRoleModel.getUserId()).get();
         Role role = this.roleRepository.findByAuthority(userChangeRoleModel.getRoleName());
 

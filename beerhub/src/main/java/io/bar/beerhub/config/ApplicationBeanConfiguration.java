@@ -1,6 +1,8 @@
 package io.bar.beerhub.config;
 
+import io.bar.beerhub.util.EscapeCharsUtilImpl;
 import io.bar.beerhub.util.FileUtilImpl;
+import io.bar.beerhub.util.factory.EscapeCharsUtil;
 import io.bar.beerhub.util.factory.FileUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +15,10 @@ public class ApplicationBeanConfiguration {
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Bean
+    public EscapeCharsUtil escapeCharsUtil() {return new EscapeCharsUtilImpl();
     }
 
     @Bean
