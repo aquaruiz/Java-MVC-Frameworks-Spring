@@ -161,13 +161,16 @@ public class UserServiceTests {
     @Test
     public void addDelUserRole_WhenDeleteRole_ShouldExcludeRoleFromUser() {
         UserChangeRoleModel userChangeRoleModel = new UserChangeRoleModel() {{
-            setRoleName(ROLE);
+            setRoleName(ROLE_2);
             setUserId(USER_ID);
         }};
 
-        optionalUser.get().getAuthorities().add(role);
+        Role role2 = new Role() {{
+            setAuthority(ROLE_2);
+        }};
+
         when(userRepositoryMock.findById(USER_ID)).thenReturn(optionalUser);
-        when(roleRepositoryMock.findByAuthority(ROLE)).thenReturn(role);
+        when(roleRepositoryMock.findByAuthority(ROLE_2)).thenReturn(role2);
 
         Boolean resultDeleteRole = userService.addDelUserRole(userChangeRoleModel);
         Assert.assertEquals(true, resultDeleteRole);
@@ -176,12 +179,16 @@ public class UserServiceTests {
     @Test
     public void addDelUserRole_WhenDeleteRole_ShouldReturnTrue() {
         UserChangeRoleModel userChangeRoleModel = new UserChangeRoleModel() {{
-            setRoleName(ROLE);
+            setRoleName(ROLE_2);
             setUserId(USER_ID);
         }};
 
+        Role role2 = new Role() {{
+            setAuthority(ROLE_2);
+        }};
+
         when(userRepositoryMock.findById(USER_ID)).thenReturn(optionalUser);
-        when(roleRepositoryMock.findByAuthority(ROLE)).thenReturn(role);
+        when(roleRepositoryMock.findByAuthority(ROLE_2)).thenReturn(role2);
 
         Boolean resultAddRole = userService.addDelUserRole(userChangeRoleModel);
         Assert.assertEquals(true, resultAddRole);
