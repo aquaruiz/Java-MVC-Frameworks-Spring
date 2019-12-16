@@ -5,6 +5,7 @@ import io.bar.beerhub.data.models.User;
 import io.bar.beerhub.data.repositories.RoleRepository;
 import io.bar.beerhub.data.repositories.UserRepository;
 import io.bar.beerhub.errors.UserRegistrationException;
+import io.bar.beerhub.errors.UsernameAlreadyExistException;
 import io.bar.beerhub.services.factories.CashService;
 import io.bar.beerhub.services.factories.RoleService;
 import io.bar.beerhub.services.factories.UserService;
@@ -35,7 +36,14 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository, CashService cashService, RoleService roleService, ModelMapper modelMapper, EscapeCharsUtil escapeCharsUtil, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(RoleRepository roleRepository,
+                           UserRepository userRepository,
+                           CashService cashService,
+                           RoleService roleService,
+                           ModelMapper modelMapper,
+                           EscapeCharsUtil escapeCharsUtil,
+                           BCryptPasswordEncoder bCryptPasswordEncoder) {
+
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.cashService = cashService;
@@ -47,13 +55,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.userRepository.findByUsername(username);
+        User savedUser = this.userRepository.findByUsername(username);
+
+        if (savedUser == null) {
+            throw new UsernameNotFoundException("User does not exists!");
+        }
+
+        return savedUser;
     }
 
     @Override
-    public void register(UserServiceModel userServiceModel) {
+    public UserServiceModel register(UserServiceModel userServiceModel) {
         userServiceModel = escapeCharsUtil.escapeChars(userServiceModel);
         User user = this.modelMapper.map(userServiceModel, User.class);
+
+        User saved = this.userRepository.findByUsername(userServiceModel.getUsername());
+
+        if (saved != null) {
+            throw new UsernameAlreadyExistException("User with username " + saved.getUsername()+ " already exists!");
+        }
+
         if (this.userRepository.count() == 0) {
             this.roleService.seedRolesInDb();
             this.cashService.initCashInDb();
@@ -65,11 +86,14 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
+        User savedUser;
         try {
-            this.userRepository.saveAndFlush(user);
+            savedUser = this.userRepository.saveAndFlush(user);
         } catch (Exception ignored) {
             throw new UserRegistrationException("Cannot register user with username " + user.getUsername());
         }
+
+        return this.modelMapper.map(savedUser, UserServiceModel.class);
     }
 
     @Override
