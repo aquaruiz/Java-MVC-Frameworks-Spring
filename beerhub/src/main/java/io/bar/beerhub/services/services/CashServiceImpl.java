@@ -25,7 +25,7 @@ public class CashServiceImpl implements CashService {
 
     @Override
     public boolean spendMoney(BigDecimal money) {
-        Cash currentCash = this.cashRepository.findAll().get(1);
+        Cash currentCash = this.cashRepository.findAll().get(0);
 
         if (currentCash.getQuantity().compareTo(money) >= 0) {
             BigDecimal cash = currentCash.getQuantity().subtract(money);
@@ -39,14 +39,14 @@ public class CashServiceImpl implements CashService {
     @Override
     public void collectMoney(BigDecimal money) {
         List<Cash> currentCashes = this.cashRepository.findAll();
-        Cash currentCash= null;
+        Cash currentCash = null;
 
         if (currentCashes.size() == 0) {
             currentCash = new Cash();
             currentCash.setQuantity(BigDecimal.valueOf(10000));
         }
 
-        currentCash =currentCashes.get(0);
+        currentCash = currentCashes.get(0);
         BigDecimal calc = currentCash.getQuantity().add(money);
         currentCash.setQuantity(calc);
         this.cashRepository.saveAndFlush(currentCash);
