@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.*;
@@ -122,38 +123,40 @@ public class UserServiceTests {
         userService.register(userServiceModel);
     }
 
-//    @Test(expected = UsernameNotFoundException.class)
-//    public void loadUserByUsername_withNonExistingUser_shouldThrowUsernameNotFoundException() {
-//        Mockito
-//                .when(userService.loadUserByUsername(USERNAME))
-//                .thenThrow(UsernameNotFoundException.class);
-//        userService.loadUserByUsername(USERNAME);
-//    }
-//
-//    @Test
-//    public void getAllUsers_WhenUsersInDb_shouldReturnListUsers() {
-//        List<UserServiceModel> users = new ArrayList<>();
-//        users.add(userServiceModel);
-//
-//        Mockito
-//                .when(userService.getAllUsers())
-//                .thenReturn(users);
-//
-//        List<UserServiceModel> savedUsers = userService.getAllUsers();
-//        Assert.assertEquals(savedUsers, users);
-//    }
-//
-//    @Test
-//    public void getAllUsers_WhenNoUsersInDb_ShouldReturnEmptyList() {
-//        List<UserServiceModel> users = new ArrayList<>();
-//
-//        Mockito
-//                .when(userService.getAllUsers())
-//                .thenReturn(users);
-//
-//        List<UserServiceModel> savedUsers = userService.getAllUsers();
-//        Assert.assertEquals(savedUsers, new ArrayList<>());
-//    }
+    @Test(expected = UsernameNotFoundException.class)
+    public void loadUserByUsername_withNonExistingUser_shouldThrowUsernameNotFoundException() {
+        when(userRepositoryMock.findByUsername(any()))
+                .thenReturn(null);
+        userService.loadUserByUsername(USERNAME);
+    }
+
+    @Test
+    public void getAllUsers_WhenUsersInDb_shouldReturnListUsers() {
+        List<User> users = new ArrayList<>();
+        users.add(user);
+
+        List<UserServiceModel> usersModels = new ArrayList<>();
+        usersModels.add(userServiceModel);
+
+        when(userRepositoryMock.findAll())
+            .thenReturn(users);
+
+        List<UserServiceModel> savedUsers = userService.getAllUsers();
+
+        Assert.assertEquals(savedUsers.get(0).getUsername(), usersModels.get(0).getUsername());
+        Assert.assertEquals(savedUsers.size(), usersModels.size());
+    }
+
+    @Test
+    public void getAllUsers_WhenNoUsersInDb_ShouldReturnEmptyList() {
+        List<UserServiceModel> users = new ArrayList<>();
+
+        when(userRepositoryMock.findAll())
+                .thenReturn(new ArrayList<>());
+
+        List<UserServiceModel> savedUsers = userService.getAllUsers();
+        Assert.assertEquals(savedUsers, new ArrayList<>());
+    }
 
     @Test
     public void addDelUserRole_WhenDeleteRole_ShouldExcludeRoleFromUser() {
