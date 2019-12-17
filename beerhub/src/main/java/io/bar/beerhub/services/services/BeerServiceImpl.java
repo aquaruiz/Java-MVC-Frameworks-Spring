@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,7 +52,14 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public BeerServiceModel findOneById(String beerId) {
-        return this.modelMapper.map(this.beerRepository.findById(beerId).get(), BeerServiceModel.class);
+        Optional<Beer> foundBeer = this.beerRepository.findById(beerId);
+
+        if (foundBeer == null || foundBeer.isEmpty()){
+            throw new BeerNotFoundException("Beer not found");
+        }
+
+        Beer savedBeer = foundBeer.get();
+        return this.modelMapper.map(savedBeer, BeerServiceModel.class);
     }
 
     @Override
@@ -71,13 +79,22 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void buyBeer(BeerServiceModel beerServiceModel, Long quantity) {
-        Beer beerToBuy = this.beerRepository.findById(beerServiceModel.getId()).get();
-        if (beerToBuy == null || !beerToBuy.getName().equals(beerServiceModel.getName())) {
+    public boolean buyBeer(BeerServiceModel beerServiceModel, Long quantity) {
+        String beerId = beerServiceModel.getId();
+        Optional<Beer> foundBeer = this.beerRepository.findById(beerId);
+
+        if (foundBeer == null || foundBeer.isEmpty() || !foundBeer.get().getName().equals(beerServiceModel.getName())) {
             throw new BeerNotFoundException("Beer not found");
+        }
+
+        Beer beerToBuy = foundBeer.get();
+
+        if (quantity < 1) {
+            return false;
         }
 
         beerToBuy.setQuantity(beerToBuy.getQuantity() + quantity);
         this.beerRepository.saveAndFlush(beerToBuy);
+        return true;
     }
 }

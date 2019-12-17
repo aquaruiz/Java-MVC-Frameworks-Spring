@@ -1,6 +1,5 @@
 package io.bar.beerhub.services.factories;
 
-import io.bar.beerhub.data.models.Beer;
 import io.bar.beerhub.services.models.BeerServiceModel;
 
 import java.util.List;
@@ -18,5 +17,5 @@ public interface BeerService {
 
     List<BeerServiceModel> findAllBeersOnStock();
 
-    void buyBeer(BeerServiceModel beerServiceModel, Long quantity);
+    boolean buyBeer(BeerServiceModel beerServiceModel, Long quantity);
 }
