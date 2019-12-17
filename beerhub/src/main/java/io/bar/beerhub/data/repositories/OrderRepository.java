@@ -14,7 +14,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
     List<Waitress> getAllByWaitress(Waitress waitress);
 
-    Order getByCustomer(User customer);
+    List<Order> getByCustomer(User customer);
 
     @Query("select o from orders o where o.closed = FALSE and o.customer =:customer")
     List<Order> getAllOpenOrdersByCustomer(@Param("customer") User customer);

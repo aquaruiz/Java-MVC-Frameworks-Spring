@@ -1,6 +1,5 @@
 package io.bar.beerhub.services.services;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import io.bar.beerhub.data.models.Beer;
 import io.bar.beerhub.data.models.Order;
 import io.bar.beerhub.data.models.User;
@@ -12,6 +11,7 @@ import io.bar.beerhub.data.repositories.WaitressRepository;
 import io.bar.beerhub.services.factories.OrderService;
 import io.bar.beerhub.services.models.PaycheckServiceModel;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -96,7 +96,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public PaycheckServiceModel finalizePayCheck(String customerName) {
         User customer = this.userRepository.findByUsername(customerName);
+
+        if (customer == null) {
+            throw new UsernameNotFoundException("Not such customer");
+        }
+
         List<Order> orders = this.orderRepository.getAllByCustomer(customer);
+
+        if (orders.size() == 0) {
+            return new PaycheckServiceModel();
+        }
+
         long ordersNum = 0;
         long beersNum = 0;
 
@@ -139,25 +149,43 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getCustomerCurrentOrder(String username) {
         User savedUser = this.userRepository.findByUsername(username);
-        Order customerOrder = this.orderRepository.getByCustomer(savedUser);
 
-        if (customerOrder == null || customerOrder.isClosed()) {
-            customerOrder = new Order();
-            customerOrder.setCustomer(savedUser);
+        if (savedUser == null) {
+            throw new UsernameNotFoundException("Not such customer");
         }
 
-        return customerOrder;
+        List<Order> customerOrders = this.orderRepository.getAllOpenOrdersByCustomer(savedUser);
+        Order currentOrder;
+
+        if (customerOrders.size() == 0) {
+            currentOrder = new Order();
+            currentOrder.setCustomer(savedUser);
+        } else {
+            currentOrder = customerOrders.get(0);
+        }
+
+        return currentOrder;
     }
 
     @Override
-    public void closeCustomerOrders(String name) {
+    public boolean closeCustomerOrders(String name) {
         User customer = this.userRepository.findByUsername(name);
-        List<Order> orders = this.orderRepository.getAllByCustomer(customer);
+
+        if (customer == null) {
+            throw new UsernameNotFoundException("Not such customer");
+        }
+
+        List<Order> orders = this.orderRepository.getAllOpenOrdersByCustomer(customer);
+
+        if (orders.size() < 1) {
+            return false;
+        }
 
         for (Order order : orders) {
             order.setClosed(true);
         }
 
         this.orderRepository.saveAll(orders);
+        return true;
     }
 }

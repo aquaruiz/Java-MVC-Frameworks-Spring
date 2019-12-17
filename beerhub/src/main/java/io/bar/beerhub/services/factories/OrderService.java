@@ -12,5 +12,5 @@ public interface OrderService {
 
     Order getCustomerCurrentOrder(String username);
 
-    void closeCustomerOrders(String name);
+    boolean closeCustomerOrders(String name);
 }
