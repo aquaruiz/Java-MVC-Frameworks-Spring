@@ -24,13 +24,16 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void seedRolesInDb() {
+    public boolean seedRolesInDb() {
         if (this.roleRepository.count() == 0){
             this.roleRepository.saveAndFlush(new Role("ROLE_ROOT"));
             this.roleRepository.saveAndFlush(new Role("ROLE_ADMIN"));
             this.roleRepository.saveAndFlush(new Role("ROLE_BARTENDER"));
             this.roleRepository.saveAndFlush(new Role("ROLE_CUSTOMER"));
             this.roleRepository.saveAndFlush(new Role("ROLE_WAITRESS"));
+            return true;
+        } else {
+            return false;
         }
     }
 
