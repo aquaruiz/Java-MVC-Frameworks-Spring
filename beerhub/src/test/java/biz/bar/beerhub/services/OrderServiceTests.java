@@ -8,6 +8,8 @@ import io.bar.beerhub.data.repositories.BeerRepository;
 import io.bar.beerhub.data.repositories.OrderRepository;
 import io.bar.beerhub.data.repositories.UserRepository;
 import io.bar.beerhub.data.repositories.WaitressRepository;
+import io.bar.beerhub.errors.BeerNotFoundException;
+import io.bar.beerhub.errors.WaitressNotFoundException;
 import io.bar.beerhub.services.factories.OrderService;
 import io.bar.beerhub.services.models.PaycheckServiceModel;
 import io.bar.beerhub.services.services.OrderServiceImpl;
@@ -23,6 +25,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.mockito.ArgumentMatchers.any;
@@ -119,14 +122,14 @@ public class OrderServiceTests {
 
 
     @Test(expected = UsernameNotFoundException.class)
-    public void PaycheckServiceModel_WhenCustomerNotFound_ShouldThrowUsernameNotFoundException() {
+    public void finalizePayCheck_WhenCustomerNotFound_ShouldThrowUsernameNotFoundException() {
         when(userRepositoryMock.findByUsername(any())).thenReturn(null);
 
         PaycheckServiceModel result = this.orderService.finalizePayCheck("anybody");
     }
 
     @Test()
-    public void PaycheckServiceModel_WhenNoOrders_ShouldReturnEmptyModel() {
+    public void finalizePayCheck_WhenNoOrders_ShouldReturnEmptyModel() {
         when(userRepositoryMock.findByUsername(any())).thenReturn(new User());
         when(orderRepositoryMock.getAllByCustomer(any(User.class))).thenReturn(new ArrayList<>());
 
@@ -138,7 +141,7 @@ public class OrderServiceTests {
 
 
     @Test()
-    public void PaycheckServiceModel_WhenSomeOrders_ShouldReturnRightModel() {
+    public void finalizePayCheck_WhenSomeOrders_ShouldReturnRightModel() {
         User newUser = new User();
         newUser.setUsername("anybody");
 
@@ -177,5 +180,89 @@ public class OrderServiceTests {
         PaycheckServiceModel result = orderService.finalizePayCheck("anybody");
 
         Assert.assertThat(result, samePropertyValuesAs(paycheckServiceModel));
+    }
+
+    @Test(expected = UsernameNotFoundException.class)
+    public void bookWaitress_WhenCustomerNotFound_ShouldThrowUsernameNotFoundException() {
+        when(userRepositoryMock.findByUsername(any())).thenReturn(null);
+
+        boolean result = orderService.bookWaitress("0000-0000-0000", "anybody");
+    }
+
+    @Test(expected = WaitressNotFoundException.class)
+    public void bookWaitress_WhenWaitressNotFound_ShouldThrowWaitressNotFoundException() {
+        when(userRepositoryMock.findByUsername(any())).thenReturn(new User());
+        when(orderRepositoryMock.getAllOpenOrdersByCustomer(any(User.class))).thenReturn(new ArrayList<>());
+        when(waitressRepositoryMock.findById(any(String.class))).thenReturn(Optional.empty());
+
+        boolean result = orderService.bookWaitress("0000-0000-0000", "anybody");
+    }
+
+    @Test
+    public void bookWaitress_WhenNoOrders_ShouldCreateNewOrderAndReturnTrue() {
+        when(userRepositoryMock.findByUsername(any())).thenReturn(new User());
+        when(orderRepositoryMock.getAllOpenOrdersByCustomer(any(User.class))).thenReturn(new ArrayList<>());
+        when(waitressRepositoryMock.findById(any(String.class))).thenReturn(Optional.of(new Waitress()));
+
+        boolean result = orderService.bookWaitress("0000-0000-0000", "anybody");
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void bookWaitress_WhenOrders_ShouldAddWaitressAndReturnTrue() {
+        Beer beer = new Beer();
+        beer.setName("Beck's");
+        beer.setSellPrice(BigDecimal.valueOf(5));
+
+        List<Beer> myBeers = new ArrayList<>();
+        myBeers.add(beer);
+        myBeers.add(beer);
+        myBeers.add(beer);
+
+        Waitress waitress = new Waitress();
+        waitress.setTipsRate(0.05);
+        waitress.setName("Peggy");
+
+        Order order = new Order();
+        order.setWaitress(waitress);
+        order.setBeers(myBeers);
+        order.setCustomer(new User());
+        order.setClosed(false);
+
+        List<Order> myOrders = new ArrayList<>();
+        myOrders.add(order);
+
+        when(userRepositoryMock.findByUsername(any())).thenReturn(new User());
+        when(orderRepositoryMock.getAllOpenOrdersByCustomer(any(User.class))).thenReturn(myOrders);
+        when(waitressRepositoryMock.findById(any(String.class))).thenReturn(Optional.of(waitress));
+
+        boolean result = orderService.bookWaitress("0000-0000-0000", "anybody");
+        Assert.assertTrue(result);
+    }
+
+    @Test(expected = UsernameNotFoundException.class)
+    public void orderBeer_WhenCustomerNotFound_ShouldThrowUsernameNotFoundException() {
+        when(userRepositoryMock.findByUsername(any())).thenReturn(null);
+
+        boolean result = orderService.orderBeer("0000-0000-0000", 1l, "anybody");
+    }
+
+    @Test(expected = BeerNotFoundException.class)
+    public void orderBeer_WhenBeerNotFound_ShouldThrowBeerNotFoundException() {
+        when(userRepositoryMock.findByUsername(any())).thenReturn(new User());
+        when(beerRepositoryMock.findById(any(String.class))).thenReturn(Optional.empty());
+
+        boolean result = orderService.orderBeer("0000-0000-0000", 1l, "anybody");
+    }
+
+    @Test
+    public void orderBeer_WhenCustomerAndBeerNotFound_ShouldReturnTrue() {
+        when(userRepositoryMock.findByUsername(any())).thenReturn(new User());
+        when(beerRepositoryMock.findById(any(String.class))).thenReturn(Optional.of(new Beer()));
+        when(orderRepositoryMock.getAllOpenOrdersByCustomer(any(User.class))).thenReturn(new ArrayList<>());
+        when(waitressRepositoryMock.findAllByOrderByTipsRateAsc()).thenReturn(List.of(new Waitress()));
+
+        boolean result = orderService.orderBeer("0000-0000-0000", 1l, "anybody");
+        Assert.assertTrue(result);
     }
 }

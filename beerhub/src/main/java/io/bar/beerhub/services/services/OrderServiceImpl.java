@@ -8,6 +8,8 @@ import io.bar.beerhub.data.repositories.BeerRepository;
 import io.bar.beerhub.data.repositories.OrderRepository;
 import io.bar.beerhub.data.repositories.UserRepository;
 import io.bar.beerhub.data.repositories.WaitressRepository;
+import io.bar.beerhub.errors.BeerNotFoundException;
+import io.bar.beerhub.errors.WaitressNotFoundException;
 import io.bar.beerhub.services.factories.OrderService;
 import io.bar.beerhub.services.models.PaycheckServiceModel;
 import org.modelmapper.ModelMapper;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -40,9 +43,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void orderBeer(String id, Long quantity, String customerName) {
+    public boolean orderBeer(String id, Long quantity, String customerName) {
         User savedUser = this.userRepository.findByUsername(customerName);
-        Beer orderedBeer = this.beerRepository.findById(id).get();
+
+        if (savedUser == null) {
+            throw new UsernameNotFoundException("Not such customer");
+        }
+
+        Optional<Beer> foundBeer = this.beerRepository.findById(id);
+
+        if (foundBeer == null || foundBeer.isEmpty()){
+            throw new BeerNotFoundException("Not such beer");
+        }
+
+        Beer orderedBeer = foundBeer.get();
 
         List<Order> customerOrders = this.orderRepository.getAllOpenOrdersByCustomer(savedUser);
 
@@ -70,13 +84,18 @@ public class OrderServiceImpl implements OrderService {
         }
 
         this.orderRepository.saveAndFlush(currentOrder);
+        return true;
     }
 
     @Override
-    public void bookWaitress(String waitressId, String customerName) {
+    public boolean bookWaitress(String waitressId, String customerName) {
         User savedUser = this.userRepository.findByUsername(customerName);
-        List<Order> customerOrders = this.orderRepository.getAllOpenOrdersByCustomer(savedUser);
 
+        if (savedUser == null) {
+            throw new UsernameNotFoundException("Not such customer");
+        }
+
+        List<Order> customerOrders = this.orderRepository.getAllOpenOrdersByCustomer(savedUser);
 
         Order currentOrder = null;
 
@@ -87,10 +106,17 @@ public class OrderServiceImpl implements OrderService {
             currentOrder.setCustomer(savedUser);
         }
 
-        Waitress chosenWaitress = this.waitressRepository.findById(waitressId).get();
+        Optional<Waitress> foundWaitress = this.waitressRepository.findById(waitressId);
+
+        if (foundWaitress == null || foundWaitress.isEmpty()){
+            throw new WaitressNotFoundException("Not Such waitress");
+        }
+
+        Waitress chosenWaitress = foundWaitress.get();
         currentOrder.setWaitress(chosenWaitress);
 
         this.orderRepository.saveAndFlush(currentOrder);
+        return true;
     }
 
     @Override
