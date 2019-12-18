@@ -3,6 +3,7 @@ package io.bar.beerhub.data.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity
@@ -20,7 +21,8 @@ public class Beer extends BaseEntity {
     public Beer() {
     }
 
-    @Column
+    @NotNull
+    @Column(nullable = false)
     public String getName() {
         return name;
     }

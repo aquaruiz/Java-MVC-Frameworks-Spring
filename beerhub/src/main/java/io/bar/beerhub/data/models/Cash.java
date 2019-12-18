@@ -1,5 +1,6 @@
 package io.bar.beerhub.data.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ public class Cash extends BaseEntity {
     public Cash() {
     }
 
+    @Column
     public BigDecimal getQuantity() {
         return quantity;
     }

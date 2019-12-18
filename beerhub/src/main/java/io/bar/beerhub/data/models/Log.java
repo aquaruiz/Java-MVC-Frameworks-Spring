@@ -15,7 +15,7 @@ public class Log extends BaseEntity {
     public Log() {
     }
 
-    @Column
+    @Column(nullable = false)
     public String getUsername() {
         return username;
     }
@@ -24,7 +24,7 @@ public class Log extends BaseEntity {
         this.username = username;
     }
 
-    @Column
+    @Column(nullable = false)
     public String getDescription() {
         return description;
     }
@@ -33,7 +33,7 @@ public class Log extends BaseEntity {
         this.description = description;
     }
 
-    @Column
+    @Column(nullable = false)
     public LocalDateTime getTime() {
         return time;
     }

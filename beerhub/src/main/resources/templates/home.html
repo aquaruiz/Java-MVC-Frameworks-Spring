@@ -25,6 +25,7 @@
                     <div class="container">
                         <h1 class="text-black display-3">BeerHub bar</h1>
                         <hr class="bg-dark hr-2"/>
+                        <div th:text="${#dates.dayOfWeekName(${#dates.createNow()})}"></div>
                         <h1 class="text-black display-4">Choose your <a class="text-black"
                                                                         th:href="@{/waitress/all}">Waitress</a></h1>
                         <h1 class="text-black display-4">or check the <a class="text-black"

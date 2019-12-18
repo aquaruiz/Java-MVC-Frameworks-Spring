@@ -11,6 +11,7 @@ import io.bar.beerhub.web.models.WaitressDetailsViewModel;
 import io.bar.beerhub.web.models.WaitressViewModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -50,8 +51,11 @@ public class WaitressController extends BaseController {
     @PageTitle("Add Waitress")
     public ModelAndView addWaitress(Principal principal,
                                     ModelAndView modelAndView,
+                                    BindingResult bindingResult,
                                     @ModelAttribute(name = "waitress") @Valid WaitressViewModel waitressViewModel) {
 
+        // TODO
+        bindingResult.hasErrors();
         waitressViewModel = escapeCharsUtil.escapeChars(waitressViewModel);
         WaitressServiceModel waitressServiceModel = this.modelMapper.map(waitressViewModel, WaitressServiceModel.class);
         this.logService.recLogInDb(new LogServiceModel()

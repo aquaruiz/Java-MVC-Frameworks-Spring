@@ -3,6 +3,7 @@ package io.bar.beerhub.data.models;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -17,7 +18,8 @@ public class User extends BaseEntity implements UserDetails {
     public User() {
     }
 
-    @Column(unique = true)
+    @NotNull
+    @Column(unique = true, nullable = false, updatable = false)
     public String getUsername() {
         return username;
     }
@@ -26,7 +28,8 @@ public class User extends BaseEntity implements UserDetails {
         this.username = username;
     }
 
-    @Column
+    @NotNull
+    @Column(nullable = false)
     public String getPassword() {
         return password;
     }

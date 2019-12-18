@@ -3,6 +3,7 @@ package io.bar.beerhub.data.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -14,7 +15,8 @@ public class Waitress extends BaseEntity {
     public Waitress() {
     }
 
-    @Column
+    @NotNull
+    @Column(nullable = false)
     public String getName() {
         return name;
     }
