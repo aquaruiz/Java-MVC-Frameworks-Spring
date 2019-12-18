@@ -9,6 +9,7 @@ import io.bar.beerhub.errors.UsernameAlreadyExistException;
 import io.bar.beerhub.services.factories.CashService;
 import io.bar.beerhub.services.factories.RoleService;
 import io.bar.beerhub.services.factories.UserService;
+import io.bar.beerhub.services.factories.WaitressService;
 import io.bar.beerhub.services.models.UserServiceModel;
 import io.bar.beerhub.util.factory.EscapeCharsUtil;
 import io.bar.beerhub.web.models.UserChangeRoleModel;
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final CashService cashService;
+    private final WaitressService waitressService;
     private final RoleService roleService;
     private final ModelMapper modelMapper;
     private final EscapeCharsUtil escapeCharsUtil;
@@ -39,6 +41,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(RoleRepository roleRepository,
                            UserRepository userRepository,
                            CashService cashService,
+                           WaitressService waitressService,
                            RoleService roleService,
                            ModelMapper modelMapper,
                            EscapeCharsUtil escapeCharsUtil,
@@ -47,6 +50,7 @@ public class UserServiceImpl implements UserService {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.cashService = cashService;
+        this.waitressService = waitressService;
         this.roleService = roleService;
         this.modelMapper = modelMapper;
         this.escapeCharsUtil = escapeCharsUtil;
@@ -72,12 +76,14 @@ public class UserServiceImpl implements UserService {
         User saved = this.userRepository.findByUsername(userServiceModel.getUsername());
 
         if (saved != null) {
-            throw new UsernameAlreadyExistException("User with username " + saved.getUsername()+ " already exists!");
+            throw new UsernameAlreadyExistException("User with username " + saved.getUsername() + " already exists!");
         }
+
 
         if (this.userRepository.count() == 0) {
             this.roleService.seedRolesInDb();
             this.cashService.initCashInDb();
+            this.waitressService.initWaitressesInDb();
 
             user.setAuthorities(new HashSet<>(this.roleRepository.findAll()));
         } else {

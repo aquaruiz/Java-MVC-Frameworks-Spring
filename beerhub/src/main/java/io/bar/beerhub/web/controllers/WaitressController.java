@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -41,7 +42,7 @@ public class WaitressController extends BaseController {
     }
 
     @GetMapping("/add")
-//    @PreAuthorize("hasAuthority('MODERATOR')")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_ROOT", "ROLE_BARTENDER"})
     @PageTitle("Add Waitress")
     public ModelAndView addWaitress(ModelAndView modelAndView) {
         modelAndView.addObject("waitress", new WaitressViewModel());
@@ -49,7 +50,7 @@ public class WaitressController extends BaseController {
     }
 
     @PostMapping("/add")
-//    @PreAuthorize("hasAuthority('MODERATOR')")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_ROOT", "ROLE_BARTENDER"})
     @PageTitle("Add Waitress")
     public ModelAndView addWaitress(Principal principal,
                                     ModelAndView modelAndView,
@@ -75,7 +76,8 @@ public class WaitressController extends BaseController {
     }
 
 
-    @GetMapping("/details/{id}")
+    @GetMapping("/details/?{id}")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_ROOT", "ROLE_BARTENDER", "ROLE_CUSTOMER"})
     @PageTitle("Waitress Details")
     public ModelAndView getDetails(@PathVariable String id, ModelAndView modelAndView){
         WaitressServiceModel found = this.waitressService.findById(id);
@@ -87,6 +89,7 @@ public class WaitressController extends BaseController {
 
     @GetMapping("/all")
 //    @PreAuthorize("hasAuthority('MODERATOR')")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_ROOT", "ROLE_BARTENDER", "ROLE_CUSTOMER"})
     @PageTitle("All waitresses")
     public ModelAndView viewAllWaitresses(ModelAndView modelAndView){
         List<WaitressServiceModel> waitresses = this.waitressService.findAll();
@@ -99,6 +102,7 @@ public class WaitressController extends BaseController {
     }
 
     @PostMapping("/pick")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_ROOT", "ROLE_BARTENDER", "ROLE_CUSTOMER"})
     public ModelAndView pickWaitress(@ModelAttribute WaitressViewModel waitressViewModel, ModelAndView modelAndView, Principal principal) {
         WaitressServiceModel chosen = this.waitressService.findById(waitressViewModel.getId());
         this.orderService.bookWaitress(waitressViewModel.getId(), principal.getName());

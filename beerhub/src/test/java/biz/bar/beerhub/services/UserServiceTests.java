@@ -7,10 +7,12 @@ import io.bar.beerhub.data.repositories.RoleRepository;
 import io.bar.beerhub.data.repositories.UserRepository;
 import io.bar.beerhub.errors.UsernameAlreadyExistException;
 import io.bar.beerhub.services.factories.UserService;
+import io.bar.beerhub.services.factories.WaitressService;
 import io.bar.beerhub.services.models.UserServiceModel;
 import io.bar.beerhub.services.services.CashServiceImpl;
 import io.bar.beerhub.services.services.RoleServiceImpl;
 import io.bar.beerhub.services.services.UserServiceImpl;
+import io.bar.beerhub.services.services.WaitressServiceImpl;
 import io.bar.beerhub.util.EscapeCharsUtilImpl;
 import io.bar.beerhub.web.models.UserChangeRoleModel;
 import org.junit.Assert;
@@ -80,10 +82,13 @@ public class UserServiceTests {
         this.roleRepositoryMock = Mockito.mock(RoleRepository.class);
         this.cashRepositoryMock = Mockito.mock(CashRepository.class);
 
+        WaitressService waitressServiceMock = Mockito.mock(WaitressServiceImpl.class);
+
         userService = new UserServiceImpl(
                 roleRepositoryMock,
                 userRepositoryMock,
                 new CashServiceImpl(cashRepositoryMock),
+                waitressServiceMock,
                 new RoleServiceImpl(roleRepositoryMock, new ModelMapper()),
                 new ModelMapper(),
                 new EscapeCharsUtilImpl(),

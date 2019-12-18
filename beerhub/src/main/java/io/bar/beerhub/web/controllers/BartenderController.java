@@ -13,12 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/bartender")
-@PreAuthorize("hasRole('ROLE_BARTENDER')")
+@RolesAllowed({"ROLE_ADMIN", "ROLE_ROOT", "ROLE_BARTENDER"})
+//@PreAuthorize("hasRole('ROLE_BARTENDER')")
 public class BartenderController extends BaseController {
     private final BeerService beerService;
     private final ModelMapper modelMapper;

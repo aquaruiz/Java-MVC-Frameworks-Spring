@@ -1,13 +1,11 @@
 package io.bar.beerhub.web.controllers;
 
-import io.bar.beerhub.errors.UserRegistrationException;
 import io.bar.beerhub.services.factories.LogService;
 import io.bar.beerhub.services.factories.UserService;
 import io.bar.beerhub.services.models.LogServiceModel;
 import io.bar.beerhub.services.models.UserServiceModel;
 import io.bar.beerhub.web.models.UserRegisterModel;
 import org.apache.catalina.Session;
-import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Controller
@@ -50,7 +49,7 @@ public class UserController extends BaseController {
         }
 
 //        try {
-            this.userService.register(this.modelMapper.map(model, UserServiceModel.class));
+        this.userService.register(this.modelMapper.map(model, UserServiceModel.class));
 //        } catch (UserRegistrationException ex) {
 //            modelAndView.addObject("model", model);
 //            modelAndView.addObject("error", "Cannot register this user - duplicate username");
@@ -83,5 +82,14 @@ public class UserController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ROOT')")
     public ModelAndView getDetails() {
         return view("/details");
+    }
+
+    @GetMapping("/")
+    public ModelAndView getIndex(Principal principal) {
+        if (principal == null) {
+            return redirect("index");
+        }
+
+        return redirect("home");
     }
 }

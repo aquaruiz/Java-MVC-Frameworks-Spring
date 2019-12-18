@@ -7,12 +7,11 @@
 </head>
 <body>
 
-<header>
-    <th:block th:replace="~{fragments/header}"></th:block>
-</header>
-<nav>
-    <th:block th:replace="~{fragments/nav-bar}"></th:block>
+<nav class="navbar navbar-expand-md navbar-light">
+    <th:block th:include="~{fragments/nav-bar}"></th:block>
 </nav>
+<th:block sec:authorize="hasRole('ROLE_BARTENDER')" th:include="~{fragments/bartender-nav}"></th:block>
+
 <main>
     <div class="container-fluid">
         <div class="row no-gutter">

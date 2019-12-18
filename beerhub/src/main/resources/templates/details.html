@@ -7,6 +7,11 @@
     <title>Title</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-md navbar-light">
+    <th:block th:include="~{fragments/nav-bar}"></th:block>
+</nav>
+<th:block sec:authorize="hasRole('ROLE_BARTENDER')" th:include="~{fragments/bartender-nav}"></th:block>
+
 <h1>
     Details
 </h1>

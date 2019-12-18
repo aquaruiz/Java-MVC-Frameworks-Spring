@@ -22,4 +22,5 @@ public interface WaitressService {
 
     List<WaitressServiceModel> listAllByTipsRateAsc();
 
+    void initWaitressesInDb();
 }

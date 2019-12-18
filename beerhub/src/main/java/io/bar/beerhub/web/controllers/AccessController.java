@@ -6,16 +6,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.security.PermitAll;
+
 @Controller
 @RequestMapping("/unauthorized")
-public class AccessController  extends BaseController {
+public class AccessController extends BaseController {
 
-    public AccessController() {
-    }
-
-    // TODO
     @GetMapping("")
-    public ModelAndView ddd(ModelAndView modelAndView) {
-        return view("");
+    @PermitAll
+    public ModelAndView enterUnauthorized(ModelAndView modelAndView) {
+        return view("access-error");
     }
 }

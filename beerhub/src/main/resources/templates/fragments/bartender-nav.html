@@ -2,26 +2,30 @@
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <ul class="nav nav-pills">
+                <li class="navbar-text">Bartender</li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Suppliers</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                       aria-haspopup="true"
-                       aria-expanded="true">Storage</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Check supplies</a>
-                        <a class="dropdown-item" href="#">Order More</a>
-                        <a class="dropdown-item" th:href="@{/beers/runouts}">Runouts</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Price List</a>
-                    </div>
+                    <a class="nav-link" th:href="@{/waitress/all}">Waitresses</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Cash</a>
+                    <a class="nav-link" th:href="@{/beers/all}">Beers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/orders/all}">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/cash}">Cash</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/bartender/storage}">Storage</a>
+                </li>
+            </ul>
+            <ul class="nav nav-pills">
+                <li class="navbar-text">Root</li>
+                <li sec:authorize="hasRole('ROLE_ROOT')" class="nav-item">
+                    <a class="nav-link" th:href="@{/root/list-all-users}">System Users</a>
                 </li>
                 <li sec:authorize="hasRole('ROLE_ROOT')" class="nav-item">
-                    <a class="nav-link" th:href="@{/root/list-all-users}">List All Users</a>
+                    <a class="nav-link" th:href="@{/root/list-all-logs}">System Logs</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
