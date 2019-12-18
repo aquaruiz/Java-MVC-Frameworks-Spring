@@ -11,10 +11,13 @@
     </script>
 </head>
 <body>
-<header class="sticky-top">
-    <th:block th:replace="~{fragments/header}"></th:block>
-    <th:block th:include="~{fragments/nav-bar}"></th:block>
+<header>
+    <th:block th:include="~{fragments/header}"></th:block>
 </header>
+<nav class="navbar navbar-expand-md navbar-light">
+    <th:block th:include="~{fragments/nav-bar}"></th:block>
+</nav>
+<th:block sec:authorize="hasRole('ROLE_BARTENDER')" th:include="~{fragments/bartender-nav}"></th:block>
 
 <main>
     <div class="jumbotron">

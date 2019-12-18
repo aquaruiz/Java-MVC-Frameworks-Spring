@@ -41,6 +41,6 @@ public class BeerController extends BaseController {
 
         BeerServiceModel beerServiceModel = this.modelMapper.map(beerCreateModel, BeerServiceModel.class);
         this.beerService.save(beerServiceModel);
-        return redirect("/");
+        return redirect("/bartender/storage");
     }
 }

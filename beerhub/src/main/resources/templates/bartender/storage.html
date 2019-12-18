@@ -11,20 +11,52 @@
     </script>
 </head>
 <body>
-<header class="sticky-top">
-    <th:block th:replace="~{fragments/header}"></th:block>
-    <th:block th:include="~{fragments/nav-bar}"></th:block>
+<header>
+    <th:block th:include="~{fragments/header}"></th:block>
 </header>
+<nav class="navbar navbar-expand-md navbar-light">
+    <th:block th:include="~{fragments/nav-bar}"></th:block>
+</nav>
+<th:block sec:authorize="hasRole('ROLE_BARTENDER')" th:include="~{fragments/bartender-nav}"></th:block>
 
+<script>
+    $(document).ready("ready", function () {
+        $("#loadingBox").show();
+    });
+
+    $(document).on('ajaxStop', function () {
+        setTimeout(function () {
+            $("#loadingBox").hide();
+            $(".table").show();
+        }, 1500);
+    });
+
+    $(() => {
+        $.ajax({
+            method: 'GET',
+            url: '/bartender/storage'
+        })
+    })
+
+</script>
 <main>
     <div class="jumbotron">
+        <div class="row center-pill">
+            <a sec:authorize="hasRole('ROLE_BARTENDER')" class="button bg-white text-dark btn-danger"
+               th:href="@{/beers/create}">Add
+                New Beer</a>
+        </div>
         <h2 class="text-capitalize text-xl-center">Beer List</h2>
-        <table class="table table-hover">
+        <div>
+            <section id="loadingBox" class="loadingBox">Loading ...</section>
+        </div>
+        <table class="table table-hover" style="display: none">
             <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Product</th>
-                <th scope="col">Price</th>
+                <th scope="col">Sell Price</th>
+                <th scope="col">Buy Price</th>
                 <th scope="col">Details</th>
             </tr>
             </thead>
@@ -34,13 +66,14 @@
                     <th scope="row" th:text="${iter.index + 1}">1</th>
                     <td class="text " th:text="${beer.name}">Mark</td>
                     <td class="text" th:text="|$${beer.sellPrice}|">Otto</td>
+                    <td class="text" th:text="|$${beer.buyPrice}|">Otto</td>
                     <td>
                         <button type="button" class="btn btn-secondary" th:attr="onclick=|showHere('${beer.id}')|">
                             Click
                         </button>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-dark text-white">Order one more</button>
+                        <a type="button" class="btn btn-dark text-white">Prices and Details</a>
                     </td>
                 </tr>
                 <tr style="display: none" th:id="'beer' + ${beer.id}">
@@ -53,7 +86,7 @@
     </div>
 </main>
 
-<footer  class="sticky-footer bg-black">
+<footer class="sticky-footer bg-black">
     <th:block th:include="~{fragments/footer}"></th:block>
 </footer>
 </body>

@@ -6,27 +6,34 @@
     <th:block th:include="~{fragments/head}"></th:block>
 </head>
 <body>
-<header class="sticky-top">
-    <th:block th:replace="~{fragments/header}"></th:block>
+<nav class="navbar navbar-expand-md navbar-light">
     <th:block th:include="~{fragments/nav-bar}"></th:block>
-</header>
+</nav>
+<th:block sec:authorize="hasRole('ROLE_BARTENDER')" th:include="~{fragments/bartender-nav}"></th:block>
 
 <main>
     <div class="jumbotron">
-        <h2 class="text-capitalize text-xl-center">Ready to Leave?</h2>
-        <p class="text">Your waitress name was <span th:text="${paycheck.lastWaitressName}"></span>.</p>
-        <p class="text">Your have <span th:text="${paycheck.ordersNum}"></span> open order(s).</p>
-        <p class="text">Your have drunk <span th:text="${paycheck.beersNum}"></span> beers.</p>
-        <p class="text">Your bill is $<span
-                th:text="${#numbers.formatDecimal(paycheck.bill, 1, 'COMMA', 2, 'POINT')}"></span> plus tips $<span
-                th:text="${#numbers.formatDecimal(paycheck.tips, 1, 'COMMA', 2, 'POINT')}"></span>.</p>
-        <p class="text">Total: $<span
-                th:text="${#numbers.formatDecimal(paycheck.bill + paycheck.tips, 1, 'COMMA', 2, 'POINT')}"></span>.</p>
-        <form method="post" action="/bar/pay">
-            <input type="hidden" name="bill" th:value="${paycheck.bill + paycheck.tips}">
-            <input type="hidden" name="user" th:value="${session.user}">
-            <button type="submit" class="button">Pay</button>
-        </form>
+        <th:block th:if="${paycheck.ordersNum}">
+
+            <h2 class="text-capitalize text-xl-center">Ready to Leave?</h2>
+            <p class="text">Your waitress name was <span th:text="${paycheck.lastWaitressName}"></span>.</p>
+            <p class="text">Your have <span th:text="${paycheck.ordersNum}"></span> open order(s).</p>
+            <p class="text">Your have drunk <span th:text="${paycheck.beersNum}"></span> beers.</p>
+            <p class="text">Your bill is $<span
+                    th:text="${#numbers.formatDecimal(paycheck.bill, 1, 'COMMA', 2, 'POINT')}"></span> plus tips $<span
+                    th:text="${#numbers.formatDecimal(paycheck.tips, 1, 'COMMA', 2, 'POINT')}"></span>.</p>
+            <p class="text">Total: $<span
+                    th:text="${#numbers.formatDecimal(paycheck.bill + paycheck.tips, 1, 'COMMA', 2, 'POINT')}"></span>.
+            </p>
+            <form method="post" action="/bar/pay">
+                <input type="hidden" name="bill" th:value="${paycheck.bill + paycheck.tips}">
+                <input type="hidden" name="user" th:value="${session.user}">
+                <button type="submit" class="button">Pay</button>
+            </form>
+        </th:block>
+        <th:block th:elseif="${paycheck.ordersNum}">
+            <p>NO ORDERS YET!</p>
+        </th:block>
     </div>
 </main>
 
