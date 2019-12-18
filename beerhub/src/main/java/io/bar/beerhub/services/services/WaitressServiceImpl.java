@@ -2,6 +2,7 @@ package io.bar.beerhub.services.services;
 
 import io.bar.beerhub.data.models.Waitress;
 import io.bar.beerhub.data.repositories.WaitressRepository;
+import io.bar.beerhub.errors.WaitressNotFoundException;
 import io.bar.beerhub.services.factories.CloudinaryService;
 import io.bar.beerhub.services.factories.WaitressService;
 import io.bar.beerhub.services.models.WaitressServiceModel;
@@ -74,7 +75,7 @@ public class WaitressServiceImpl implements WaitressService {
         Waitress savedWaitress = this.waitressRepository.findById(id).orElse(null);
 
         if (savedWaitress == null) {
-//            throw new ProductNotFoundException(ConstantsDefinition.ProductConstants.NO_SUCH_PRODUCT);
+            throw new WaitressNotFoundException("Not such Waitress");
         }
 
         this.waitressRepository.delete(savedWaitress);
@@ -83,12 +84,21 @@ public class WaitressServiceImpl implements WaitressService {
     @Override
     public WaitressServiceModel findById(String id) {
         Waitress waitress = this.waitressRepository.findById(id).get();
+
+        if (waitress == null) {
+            throw new WaitressNotFoundException("Not such Waitress");
+        }
+
         return this.modelMapper.map(waitress, WaitressServiceModel.class);
     }
 
     @Override
     public WaitressServiceModel findByName(String name) {
         Waitress waitress = this.waitressRepository.findByName(name);
+        if (waitress == null) {
+            throw new WaitressNotFoundException("Not such Waitress");
+        }
+
         return this.modelMapper.map(waitress, WaitressServiceModel.class);
     }
 

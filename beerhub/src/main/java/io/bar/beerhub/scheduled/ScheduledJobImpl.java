@@ -19,11 +19,13 @@ public class ScheduledJobImpl implements ScheduledJob {
         this.fileUtil = fileUtil;
     }
 
+//    Note – in this example, that we're scheduling a
+//    task to be executed at 10:15 AM on the 15th day of every month.
     @Override
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(cron = "0 15 10 15 * ?")
     public void scheduledJob() throws IOException {
         List<Log> logs = this.logRepository.findAll();
 
-        this.fileUtil.writeFile("files/log.txt", logs);
+        this.fileUtil.writeFile("/files/log.txt", logs);
     }
 }

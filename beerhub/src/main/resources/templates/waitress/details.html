@@ -28,6 +28,10 @@
             <h2 th:text="'Name: ' + ${waitress.name}"></h2>
             <h2 th:text="'Tips Rate: ' + ${waitress.tipsRate}"></h2>
         </div>
+
+        <div class="col-lg" sec:authorize="hasRole('ROLE_BARTENDER')">
+            <a th:class="button" th:method="delete" th:href="@{'/waitress/delete/'+ ${waitress.id}}" th:text="'Fire ' + ${waitress.name}">Details</a>
+        </div>
     </div>
 
 </div>

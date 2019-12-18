@@ -15,6 +15,10 @@
 <th:block sec:authorize="hasRole('ROLE_BARTENDER')" th:include="~{fragments/bartender-nav}"></th:block>
 
 <main class="mt-5">
+    <div class="row center-pill">
+        <a sec:authorize="hasRole('ROLE_BARTENDER')" class="button bg-white text-dark btn-danger" th:href="@{/waitress/add}">Hire
+            New Waitress</a>
+    </div>
     <hr class="bg-hero hr-2"/>
     <h1 class="text-center text-black display-4">BeerHub Waitresses</h1>
     <hr class="bg-hero w-25 hr-2"/>
@@ -37,7 +41,7 @@
                     </form>
                     <hr>
                     <p>
-                        <a th:class="button" th:href="@{/waitress/details/(${waitress.id})}">Details</a>
+                        <a th:class="button" th:href="@{'/waitress/details/'+ ${waitress.id}}">Details</a>
                     </p>
                 </div>
             </div>

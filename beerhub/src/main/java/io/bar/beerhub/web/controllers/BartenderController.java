@@ -2,18 +2,19 @@ package io.bar.beerhub.web.controllers;
 
 import io.bar.beerhub.errors.BeerNotFoundException;
 import io.bar.beerhub.services.factories.BeerService;
+import io.bar.beerhub.services.factories.CashService;
 import io.bar.beerhub.services.models.BeerServiceModel;
 import io.bar.beerhub.web.models.BeerBuyModel;
 import io.bar.beerhub.web.models.BeerListingModel;
 import io.bar.beerhub.web.models.BeerRunoutModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.security.RolesAllowed;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,11 +24,13 @@ import java.util.stream.Collectors;
 //@PreAuthorize("hasRole('ROLE_BARTENDER')")
 public class BartenderController extends BaseController {
     private final BeerService beerService;
+    private final CashService cashService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public BartenderController(BeerService beerService, ModelMapper modelMapper) {
+    public BartenderController(BeerService beerService, CashService cashService, ModelMapper modelMapper) {
         this.beerService = beerService;
+        this.cashService = cashService;
         this.modelMapper = modelMapper;
     }
 
@@ -40,6 +43,13 @@ public class BartenderController extends BaseController {
                 .collect(Collectors.toList());
         modelAndView.addObject("beers", beerListing);
         return view("bartender/storage", modelAndView);
+    }
+
+    @GetMapping("/cash")
+    public ModelAndView getCash(ModelAndView modelAndView) {
+        BigDecimal cash = this.cashService.getCurrentCash();
+        modelAndView.addObject("cash", cash);
+        return view("bartender/cash", modelAndView);
     }
 
     @GetMapping("/runouts")

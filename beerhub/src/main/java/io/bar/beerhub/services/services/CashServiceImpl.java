@@ -53,4 +53,17 @@ public class CashServiceImpl implements CashService {
         currentCash.setQuantity(calc);
         this.cashRepository.saveAndFlush(currentCash);
     }
+
+    public BigDecimal getCurrentCash() {
+        List<Cash> currentCashes = this.cashRepository.findAll();
+        Cash currentCash = null;
+
+        if (currentCashes.size() == 0) {
+            currentCash = new Cash();
+            currentCash.setQuantity(BigDecimal.valueOf(10000));
+        }
+
+        currentCash = currentCashes.get(0);
+        return currentCash.getQuantity();
+    }
 }

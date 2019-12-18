@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 public interface CashService {
     void initCashInDb();
 
-    boolean spendMoney (BigDecimal money);
+    boolean spendMoney(BigDecimal money);
 
-    void collectMoney (BigDecimal money);
+    void collectMoney(BigDecimal money);
+
+    public BigDecimal getCurrentCash();
 }

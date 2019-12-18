@@ -76,9 +76,9 @@ public class WaitressController extends BaseController {
     }
 
 
-    @GetMapping("/details/?{id}")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_ROOT", "ROLE_BARTENDER", "ROLE_CUSTOMER"})
     @PageTitle("Waitress Details")
+    @GetMapping("/details/{id}")
     public ModelAndView getDetails(@PathVariable String id, ModelAndView modelAndView){
         WaitressServiceModel found = this.waitressService.findById(id);
         WaitressDetailsViewModel waitressViewModel = this.modelMapper.map(found,
@@ -87,10 +87,18 @@ public class WaitressController extends BaseController {
         return this.view("/waitress/details", modelAndView);
     }
 
-    @GetMapping("/all")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_ROOT", "ROLE_BARTENDER", "ROLE_CUSTOMER"})
+    @PageTitle("Waitress Delete")
+    @GetMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable String id){
+        this.waitressService.deleteWaitress(id);
+        return this.redirect("/waitress/all");
+    }
+
 //    @PreAuthorize("hasAuthority('MODERATOR')")
     @RolesAllowed({"ROLE_ADMIN", "ROLE_ROOT", "ROLE_BARTENDER", "ROLE_CUSTOMER"})
     @PageTitle("All waitresses")
+    @GetMapping("/all")
     public ModelAndView viewAllWaitresses(ModelAndView modelAndView){
         List<WaitressServiceModel> waitresses = this.waitressService.findAll();
         modelAndView.addObject("waitresses", waitresses.stream()
