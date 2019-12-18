@@ -13,6 +13,7 @@ import io.bar.beerhub.errors.WaitressNotFoundException;
 import io.bar.beerhub.services.factories.OrderService;
 import io.bar.beerhub.services.models.PaycheckServiceModel;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class OrderServiceImpl implements OrderService {
     private final BeerRepository beerRepository;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public OrderServiceImpl(UserRepository userRepository,
                             OrderRepository orderRepository,
                             WaitressRepository waitressRepository,

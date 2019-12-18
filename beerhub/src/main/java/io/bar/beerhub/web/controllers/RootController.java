@@ -12,6 +12,7 @@ import io.bar.beerhub.web.models.RoleListingModel;
 import io.bar.beerhub.web.models.UserChangeRoleModel;
 import io.bar.beerhub.web.models.UserListingModel;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,6 +31,7 @@ public class RootController extends BaseController{
     private final ModelMapper modelMapper;
     private final RoleService roleService;
 
+    @Autowired
     public RootController(UserService userService, LogService logService, ModelMapper modelMapper, RoleService roleService) {
         this.userService = userService;
         this.logService = logService;

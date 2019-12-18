@@ -7,6 +7,7 @@ import io.bar.beerhub.web.models.BeerBuyModel;
 import io.bar.beerhub.web.models.BeerListingModel;
 import io.bar.beerhub.web.models.BeerRunoutModel;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class BartenderController extends BaseController {
     private final BeerService beerService;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public BartenderController(BeerService beerService, ModelMapper modelMapper) {
         this.beerService = beerService;
         this.modelMapper = modelMapper;

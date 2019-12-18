@@ -10,6 +10,7 @@ import io.bar.beerhub.web.annotations.PageTitle;
 import io.bar.beerhub.web.models.WaitressDetailsViewModel;
 import io.bar.beerhub.web.models.WaitressViewModel;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ public class WaitressController extends BaseController {
     private final OrderService orderService;
     private final LogService logService;
 
+    @Autowired
     public WaitressController(ModelMapper modelMapper, EscapeCharsUtil escapeCharsUtil, WaitressService waitressService, OrderService orderService, LogService logService) {
         this.modelMapper = modelMapper;
         this.escapeCharsUtil = escapeCharsUtil;

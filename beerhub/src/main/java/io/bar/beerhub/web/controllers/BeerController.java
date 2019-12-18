@@ -5,6 +5,7 @@ import io.bar.beerhub.services.models.BeerServiceModel;
 import io.bar.beerhub.util.factory.EscapeCharsUtil;
 import io.bar.beerhub.web.models.BeerCreateModel;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +22,7 @@ public class BeerController extends BaseController {
     private final EscapeCharsUtil escapeCharsUtil;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public BeerController(BeerService beerService, EscapeCharsUtil escapeCharsUtil, ModelMapper modelMapper) {
         this.beerService = beerService;
         this.escapeCharsUtil = escapeCharsUtil;

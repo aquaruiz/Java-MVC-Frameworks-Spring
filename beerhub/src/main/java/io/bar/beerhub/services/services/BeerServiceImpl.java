@@ -6,6 +6,7 @@ import io.bar.beerhub.errors.BeerNotFoundException;
 import io.bar.beerhub.services.factories.BeerService;
 import io.bar.beerhub.services.models.BeerServiceModel;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class BeerServiceImpl implements BeerService {
     private final BeerRepository beerRepository;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public BeerServiceImpl(BeerRepository beerRepository, ModelMapper modelMapper) {
         this.beerRepository = beerRepository;
         this.modelMapper = modelMapper;

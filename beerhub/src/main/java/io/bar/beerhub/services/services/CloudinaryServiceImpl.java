@@ -2,6 +2,7 @@ package io.bar.beerhub.services.services;
 
 import com.cloudinary.Cloudinary;
 import io.bar.beerhub.services.factories.CloudinaryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +14,7 @@ import java.util.HashMap;
 public class CloudinaryServiceImpl implements CloudinaryService {
     private final Cloudinary cloudinary;
 
+    @Autowired
     public CloudinaryServiceImpl(Cloudinary cloudinary) {
         this.cloudinary = cloudinary;
     }

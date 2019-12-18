@@ -10,6 +10,7 @@ import io.bar.beerhub.web.models.BeerViewModel;
 import io.bar.beerhub.web.models.Billmodel;
 import io.bar.beerhub.web.models.OrderModel;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,6 +31,7 @@ public class OrderController extends BaseController {
     private final CashService cashService;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public OrderController(BeerService beerService, OrderService orderService, CashService cashService, ModelMapper modelMapper) {
         this.beerService = beerService;
         this.orderService = orderService;

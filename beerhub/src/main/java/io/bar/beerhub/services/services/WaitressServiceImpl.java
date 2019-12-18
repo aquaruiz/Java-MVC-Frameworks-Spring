@@ -6,6 +6,7 @@ import io.bar.beerhub.services.factories.CloudinaryService;
 import io.bar.beerhub.services.factories.WaitressService;
 import io.bar.beerhub.services.models.WaitressServiceModel;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,7 @@ public class WaitressServiceImpl implements WaitressService {
     private final WaitressRepository waitressRepository;
     private final CloudinaryService cloudinaryService;
 
+    @Autowired
     public WaitressServiceImpl(ModelMapper modelMapper, WaitressRepository waitressRepository, CloudinaryService cloudinaryService) {
         this.modelMapper = modelMapper;
         this.waitressRepository = waitressRepository;

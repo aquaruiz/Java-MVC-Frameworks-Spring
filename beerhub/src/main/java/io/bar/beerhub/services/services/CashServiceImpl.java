@@ -3,6 +3,7 @@ package io.bar.beerhub.services.services;
 import io.bar.beerhub.data.models.Cash;
 import io.bar.beerhub.data.repositories.CashRepository;
 import io.bar.beerhub.services.factories.CashService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import java.util.List;
 public class CashServiceImpl implements CashService {
     private final CashRepository cashRepository;
 
+    @Autowired
     public CashServiceImpl(CashRepository cashRepository) {
         this.cashRepository = cashRepository;
     }
