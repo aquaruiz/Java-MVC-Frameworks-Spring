@@ -11,12 +11,17 @@
     </script>
 </head>
 <body>
-<header class="sticky-top">
-    <th:block th:replace="~{fragments/header}"></th:block>
+<nav class="navbar navbar-expand-md navbar-light">
     <th:block th:include="~{fragments/nav-bar}"></th:block>
-</header>
+</nav>
+<th:block sec:authorize="hasRole('ROLE_BARTENDER')" th:include="~{fragments/bartender-nav}"></th:block>
+
 <main>
     <div class="jumbotron">
+        <div class="row center-pill">
+            <a sec:authorize="hasRole('ROLE_BARTENDER')" class="button bg-white text-dark btn-danger"
+               th:href="@{/bartender/storage}">Back to Storage</a>
+        </div>
         <!--        <th:block th:include="~{fragments/bartender-nav}"></th:block>-->
         <h2 class="text-capitalize text-xl-center">Need to order these</h2>
         <hr/>

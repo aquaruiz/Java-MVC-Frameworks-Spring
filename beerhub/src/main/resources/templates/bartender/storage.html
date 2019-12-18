@@ -45,6 +45,9 @@
             <a sec:authorize="hasRole('ROLE_BARTENDER')" class="button bg-white text-dark btn-danger"
                th:href="@{/beers/create}">Add
                 New Beer</a>
+            <br>&nbsp;</br>
+            <a sec:authorize="hasRole('ROLE_BARTENDER')" class="button bg-white text-danger btn-danger"
+               th:href="@{/bartender/runouts}">Check out what to order</a>
         </div>
         <h2 class="text-capitalize text-xl-center">Beer List</h2>
         <div>

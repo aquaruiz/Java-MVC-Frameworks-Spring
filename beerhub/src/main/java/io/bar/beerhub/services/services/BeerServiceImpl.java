@@ -27,6 +27,7 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public BeerServiceModel save(BeerServiceModel beerServiceModel) {
         Beer beer = this.modelMapper.map(beerServiceModel, Beer.class);
+        beer.setQuantity(0L);
         Beer savedBeer = this.beerRepository.saveAndFlush(beer);
         return this.modelMapper.map(savedBeer, BeerServiceModel.class);
     }
