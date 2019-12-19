@@ -80,6 +80,7 @@ public class OrderServiceImpl implements OrderService {
             currentOrder = new Order();
             currentOrder.setClosed(false);
             currentOrder.setCustomer(savedUser);
+            currentOrder.setBeers(new ArrayList<>());
         }
             List<Beer> beers = new ArrayList<>();
 
