@@ -76,7 +76,7 @@
                         </button>
                     </td>
                     <td>
-                        <a type="button" class="btn btn-dark text-white">Prices and Details</a>
+                        <a type="button" th:href="@{'/beers/details/'+ ${beer.id}}" class="btn btn-dark text-white">Prices and Details</a>
                     </td>
                 </tr>
                 <tr style="display: none" th:id="'beer' + ${beer.id}">

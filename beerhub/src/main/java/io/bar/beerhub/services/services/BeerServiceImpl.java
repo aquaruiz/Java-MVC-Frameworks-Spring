@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,6 +29,14 @@ public class BeerServiceImpl implements BeerService {
     public BeerServiceModel save(BeerServiceModel beerServiceModel) {
         Beer beer = this.modelMapper.map(beerServiceModel, Beer.class);
         beer.setQuantity(0L);
+        if (beer.getBuyPrice() == null) {
+            beer.setBuyPrice(BigDecimal.ZERO);
+        }
+
+        if (beer.getSellPrice() == null) {
+            beer.setSellPrice(BigDecimal.ZERO);
+        }
+
         Beer savedBeer = this.beerRepository.saveAndFlush(beer);
         return this.modelMapper.map(savedBeer, BeerServiceModel.class);
     }
@@ -98,6 +107,29 @@ public class BeerServiceImpl implements BeerService {
 
         beerToBuy.setQuantity(beerToBuy.getQuantity() + quantity);
         this.beerRepository.saveAndFlush(beerToBuy);
+        return true;
+    }
+
+    @Override
+    public boolean edit(BeerServiceModel beerServiceModel) {
+        Optional<Beer> foundBeer = this.beerRepository.findById(beerServiceModel.getId());
+
+        if (foundBeer == null || foundBeer.isEmpty() || !foundBeer.get().getName().equals(beerServiceModel.getName())) {
+            throw new BeerNotFoundException("Beer not found");
+        }
+
+        Beer beer = this.modelMapper.map(beerServiceModel, Beer.class);
+
+        if (beer.getBuyPrice() == null) {
+            beer.setBuyPrice(BigDecimal.ZERO);
+        }
+
+        if (beer.getSellPrice() == null) {
+            beer.setSellPrice(BigDecimal.ZERO);
+        }
+
+        beer.setId(foundBeer.get().getId());
+        this.beerRepository.saveAndFlush(beer);
         return true;
     }
 }

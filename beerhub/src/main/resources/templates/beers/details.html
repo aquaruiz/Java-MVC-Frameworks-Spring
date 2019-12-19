@@ -1,10 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:include="~{fragments/head}"></th:block>
 </head>
 <body>
 
+<header>
+    <th:block th:replace="~{fragments/header}"></th:block>
+</header>
+<nav>
+    <th:block th:replace="~{fragments/nav-bar}"></th:block>
+</nav>
+
+<main class="mt-5">
+    <hr class="bg-hero hr-2"/>
+    <h1 class="text-center text-black display-4">Update Beer</h1>
+    <hr class="bg-hero w-25 hr-2"/>
+    <form class="mx-auto w-25" th:method="post" th:action="@{/beers/edit}">
+        <input type="hidden" name="_csrf" value="c95ccb2b-1afa-47bd-bf7b-a5b72739470b">
+        <div class="form-group">
+            <label for="name" class="text-black mb-1">Beer name</label>
+            <input type="hidden" class="form-control" id="id" th:value="${beer.id}" name="id">
+            <input th:value="${beer.name}" type="text" class="form-control" id="name" placeholder="Name..." name="name">
+        </div>
+        <div class="form-group">
+            <label for="brewer" class="text-black mb-1">brewer</label>
+            <input type="text" class="form-control" id="brewer" th:value="${beer.brewer}" name="brewer">
+        </div>
+        <div class="form-group">
+            <label for="description" class="text-black mb-1">description</label>
+            <input type="text" class="form-control" id="description" th:value="${beer.description}"
+                   name="description">
+        </div>
+        <div class="form-group">
+            <label for="ABV" class="text-black mb-1">ABV</label>
+            <input type="number" step="0.01" min="0" class="form-control" id="ABV" th:value="${beer.ABV}"
+                   name="ABV">
+        </div>
+        <div class="form-group">
+            <label for="buyPrice" class="text-black mb-1">buyPrice</label>
+            <input type="number" step="0.01" min="0.00" class="form-control" id="buyPrice" th:value="${beer.buyPrice}"
+            name="buyPrice">
+        </div>
+        <div class="form-group">
+            <label for="sellPrice" class="text-black mb-1">sellPrice</label>
+            <input type="number" step="0.01" min="0.00" class="form-control" id="sellPrice" th:value="${beer.sellPrice}"
+                   name="sellPrice">
+        </div>
+        <hr class="bg-hero hr-2"/>
+        <div class="button-holder mt-3 d-flex justify-content-center">
+            <button type="submit" class="btn bg-black glow-button">Update Beer</button>
+        </div>
+    </form>
+    <img src="/img/favicon.ico" class="rounded float-right" alt="beer fun">
+    <span style="visibility: hidden">....</span>
+</main>
+
+<footer class="sticky-footer bg-black">
+    <th:block th:include="~{fragments/footer}"></th:block>
+</footer>
 </body>
 </html>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.security.RolesAllowed;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/bar")
+@RolesAllowed({"ROLE_ADMIN", "ROLE_ROOT", "ROLE_BARTENDER", "ROLE_CUSTOMER"})
 public class OrderController extends BaseController {
     private final BeerService beerService;
     private final OrderService orderService;

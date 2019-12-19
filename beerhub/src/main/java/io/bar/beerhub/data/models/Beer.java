@@ -67,7 +67,7 @@ public class Beer extends BaseEntity {
         this.image = image;
     }
 
-    @Column
+    @Column(columnDefinition = "Decimal(10,2) default 0.5")
     public BigDecimal getBuyPrice() {
         return buyPrice;
     }
@@ -76,7 +76,7 @@ public class Beer extends BaseEntity {
         this.buyPrice = buyPrice;
     }
 
-    @Column
+    @Column(columnDefinition = "Decimal(10,2)  default 10")
     public BigDecimal getSellPrice() {
         return sellPrice;
     }

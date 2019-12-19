@@ -53,8 +53,8 @@ public class BartenderController extends BaseController {
     }
 
     @GetMapping("/runouts")
-    public ModelAndView getRunours(ModelAndView modelAndView) {
-        List<BeerServiceModel> beers = this.beerService.findAllRunoutsBeers(10L);
+    public ModelAndView getRunouts(ModelAndView modelAndView) {
+        List<BeerServiceModel> beers = this.beerService.findAllRunoutsBeers(40L);
         List<BeerRunoutModel> runoutBeers = beers
                 .stream()
                 .map(b -> this.modelMapper.map(b, BeerRunoutModel.class))

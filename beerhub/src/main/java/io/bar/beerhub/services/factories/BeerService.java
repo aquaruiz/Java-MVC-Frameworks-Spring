@@ -18,4 +18,6 @@ public interface BeerService {
     List<BeerServiceModel> findAllBeersOnStock();
 
     boolean buyBeer(BeerServiceModel beerServiceModel, Long quantity);
+
+    boolean edit(BeerServiceModel beerServiceModel);
 }
