@@ -3,10 +3,13 @@ package io.bar.beerhub.web.controllers;
 import io.bar.beerhub.errors.BeerNotFoundException;
 import io.bar.beerhub.services.factories.BeerService;
 import io.bar.beerhub.services.factories.CashService;
+import io.bar.beerhub.services.factories.OrderService;
 import io.bar.beerhub.services.models.BeerServiceModel;
+import io.bar.beerhub.services.models.OrderServiceModel;
 import io.bar.beerhub.web.models.BeerBuyModel;
 import io.bar.beerhub.web.models.BeerListingModel;
 import io.bar.beerhub.web.models.BeerRunoutModel;
+import io.bar.beerhub.web.models.OrderViewModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,12 +27,14 @@ import java.util.stream.Collectors;
 //@PreAuthorize("hasRole('ROLE_BARTENDER')")
 public class BartenderController extends BaseController {
     private final BeerService beerService;
+    private final OrderService orderService;
     private final CashService cashService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public BartenderController(BeerService beerService, CashService cashService, ModelMapper modelMapper) {
+    public BartenderController(BeerService beerService, OrderService orderService, CashService cashService, ModelMapper modelMapper) {
         this.beerService = beerService;
+        this.orderService = orderService;
         this.cashService = cashService;
         this.modelMapper = modelMapper;
     }
@@ -78,4 +83,16 @@ public class BartenderController extends BaseController {
         modelAndView.addObject("message", exception.getMessage());
         return modelAndView;
     }
+
+    @GetMapping("/all-orders")
+    public ModelAndView listAllOrders(ModelAndView modelAndView) {
+        List<OrderServiceModel> orders = this.orderService.listAllOrders();
+        List<OrderViewModel> orderListing = orders
+                .stream()
+                .map(b -> this.modelMapper.map(b, OrderViewModel.class))
+                .collect(Collectors.toList());
+        modelAndView.addObject("orders", orderListing);
+        return view("bartender/all-orders", modelAndView);
+    }
+
 }

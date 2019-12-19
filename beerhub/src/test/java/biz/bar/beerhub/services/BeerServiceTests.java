@@ -4,6 +4,7 @@ import io.bar.beerhub.data.models.Beer;
 import io.bar.beerhub.data.repositories.BeerRepository;
 import io.bar.beerhub.errors.BeerNotFoundException;
 import io.bar.beerhub.services.factories.BeerService;
+import io.bar.beerhub.services.factories.CashService;
 import io.bar.beerhub.services.models.BeerServiceModel;
 import io.bar.beerhub.services.services.BeerServiceImpl;
 import org.junit.Assert;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class BeerServiceTests {
     BeerRepository beerRepositoryMock;
+    CashService cashServiceMock;
     ModelMapper modelMapper;
 
     BeerService beerService;
@@ -33,9 +35,10 @@ public class BeerServiceTests {
     @Before
     public void before() {
         this.beerRepositoryMock = Mockito.mock(BeerRepository.class);
+        this.cashServiceMock = Mockito.mock(CashService.class);
         this.modelMapper = new ModelMapper();
 
-        this.beerService = new BeerServiceImpl(beerRepositoryMock, modelMapper);
+        this.beerService = new BeerServiceImpl(beerRepositoryMock, cashServiceMock, modelMapper);
     }
 
     @Test

@@ -7,6 +7,7 @@ public class BeerListingModel {
     private String name;
     private String brewer;
     private String description;
+    private Long quantity;
     private BigDecimal sellPrice;
     private BigDecimal buyPrice;
 
@@ -59,5 +60,13 @@ public class BeerListingModel {
 
     public void setBuyPrice(BigDecimal buyPrice) {
         this.buyPrice = buyPrice;
+    }
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
     }
 }

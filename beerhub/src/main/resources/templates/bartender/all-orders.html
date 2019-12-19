@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <th:block th:replace="~{fragments/header}"></th:block>
+</header>
+<nav class="navbar navbar-expand-md navbar-light">
+    <th:block th:include="~{fragments/nav-bar}"></th:block>
+</nav>
+<th:block sec:authorize="hasRole('ROLE_BARTENDER')" th:include="~{fragments/bartender-nav}"></th:block>
+
+<main>
+    <div class="jumbotron">
+        <h1 class="text-xl-center">All Orders List</h1>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Orders ID</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Waitress</th>
+                <th scope="col">Is still open</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="order, iter : ${orders}">
+                <tr class="align-items-center">
+                    <th scope="row" th:text="${iter.index + 1}">1</th>
+                    <td class="text " th:text="${order.id}">Mark</td>
+                    <td class="text" th:text="|${order.customerName}|">Otto</td>
+                    <td class="text" th:text="|${order.waitressName}|">Otto</td>
+                    <td class="text" th:text="|${order.closed}|">Otto</td>
+                    </form>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer class="sticky-footer bg-black">
+    <th:block th:include="~{fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

@@ -60,6 +60,7 @@
                 <th scope="col">Product</th>
                 <th scope="col">Sell Price</th>
                 <th scope="col">Buy Price</th>
+                <th scope="col">Bottles On Stock</th>
                 <th scope="col">Details</th>
             </tr>
             </thead>
@@ -70,6 +71,7 @@
                     <td class="text " th:text="${beer.name}">Mark</td>
                     <td class="text" th:text="|$${beer.sellPrice}|">Otto</td>
                     <td class="text" th:text="|$${beer.buyPrice}|">Otto</td>
+                    <td class="text" th:text="|${beer.quantity}|">Otto</td>
                     <td>
                         <button type="button" class="btn btn-secondary" th:attr="onclick=|showHere('${beer.id}')|">
                             Click

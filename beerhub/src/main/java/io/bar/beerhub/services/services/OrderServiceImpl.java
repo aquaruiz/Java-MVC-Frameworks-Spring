@@ -11,16 +11,20 @@ import io.bar.beerhub.data.repositories.WaitressRepository;
 import io.bar.beerhub.errors.BeerNotFoundException;
 import io.bar.beerhub.errors.WaitressNotFoundException;
 import io.bar.beerhub.services.factories.OrderService;
+import io.bar.beerhub.services.models.OrderServiceModel;
 import io.bar.beerhub.services.models.PaycheckServiceModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -45,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transient
     public boolean orderBeer(String id, Long quantity, String customerName) {
         User savedUser = this.userRepository.findByUsername(customerName);
 
@@ -66,19 +71,23 @@ public class OrderServiceImpl implements OrderService {
 
         if (customerOrders.size() > 0) {
             currentOrder = customerOrders.get(0);
+
+            List<Beer> beers = currentOrder.getBeers();
+            if (beers == null) {
+                currentOrder.setBeers(new ArrayList<>());
+            }
         } else {
             currentOrder = new Order();
+            currentOrder.setClosed(false);
             currentOrder.setCustomer(savedUser);
-
+        }
             List<Beer> beers = new ArrayList<>();
 
             for (int i = 0; i < quantity; i++) {
                 beers.add(orderedBeer);
             }
 
-            currentOrder.setBeers(beers);
-            currentOrder.setClosed(false);
-        }
+            currentOrder.getBeers().addAll(beers);
 
         if (currentOrder.getWaitress() == null) {
             Waitress myWaitress = this.waitressRepository.findAllByOrderByTipsRateAsc().get(0);
@@ -216,4 +225,17 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository.saveAll(orders);
         return true;
     }
+
+    @Override
+    public List<OrderServiceModel> listAllOrders() {
+        List<Order> orders = this.orderRepository.findAll();
+
+        List<OrderServiceModel> orderListingModels = orders.stream()
+                .map(o -> this.modelMapper.map(o, OrderServiceModel.class))
+                .collect(Collectors.toUnmodifiableList());
+
+        return orderListingModels;
+    }
+
+
 }

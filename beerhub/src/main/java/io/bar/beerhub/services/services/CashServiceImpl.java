@@ -31,6 +31,7 @@ public class CashServiceImpl implements CashService {
 
         if (currentCash.getQuantity().compareTo(money) >= 0) {
             BigDecimal cash = currentCash.getQuantity().subtract(money);
+            currentCash.setQuantity(cash);
             this.cashRepository.saveAndFlush(currentCash);
             return true;
         }

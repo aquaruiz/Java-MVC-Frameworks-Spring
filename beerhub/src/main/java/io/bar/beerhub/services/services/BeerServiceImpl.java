@@ -4,6 +4,7 @@ import io.bar.beerhub.data.models.Beer;
 import io.bar.beerhub.data.repositories.BeerRepository;
 import io.bar.beerhub.errors.BeerNotFoundException;
 import io.bar.beerhub.services.factories.BeerService;
+import io.bar.beerhub.services.factories.CashService;
 import io.bar.beerhub.services.models.BeerServiceModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,13 @@ import java.util.stream.Collectors;
 @Service
 public class BeerServiceImpl implements BeerService {
     private final BeerRepository beerRepository;
+    private final CashService cashService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public BeerServiceImpl(BeerRepository beerRepository, ModelMapper modelMapper) {
+    public BeerServiceImpl(BeerRepository beerRepository, CashService cashService, ModelMapper modelMapper) {
         this.beerRepository = beerRepository;
+        this.cashService = cashService;
         this.modelMapper = modelMapper;
     }
 
@@ -105,8 +108,12 @@ public class BeerServiceImpl implements BeerService {
             return false;
         }
 
+        BigDecimal totalAmount = beerToBuy.getBuyPrice().multiply(BigDecimal.valueOf(quantity));
+
         beerToBuy.setQuantity(beerToBuy.getQuantity() + quantity);
+        this.cashService.spendMoney(totalAmount);
         this.beerRepository.saveAndFlush(beerToBuy);
+
         return true;
     }
 
@@ -129,6 +136,7 @@ public class BeerServiceImpl implements BeerService {
         }
 
         beer.setId(foundBeer.get().getId());
+        beer.setQuantity(foundBeer.get().getQuantity());
         this.beerRepository.saveAndFlush(beer);
         return true;
     }
