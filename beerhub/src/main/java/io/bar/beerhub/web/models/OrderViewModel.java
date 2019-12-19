@@ -1,14 +1,8 @@
 package io.bar.beerhub.web.models;
 
-import io.bar.beerhub.data.models.Beer;
-import io.bar.beerhub.data.models.User;
-import io.bar.beerhub.data.models.Waitress;
-
-import java.util.List;
-
 public class OrderViewModel {
     private String id;
-    private String customerName;
+    private String customerUsername;
     private String waitressName;
     private int beersNum;
     private boolean closed;
@@ -24,12 +18,12 @@ public class OrderViewModel {
         this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCustomerUsername() {
+        return customerUsername;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomerUsername(String customerUsername) {
+        this.customerUsername = customerUsername;
     }
 
     public String getWaitressName() {

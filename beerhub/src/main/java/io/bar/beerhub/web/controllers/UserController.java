@@ -85,9 +85,10 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/")
-    public ModelAndView getIndex(Principal principal) {
+    public ModelAndView getIndex(Principal principal, ModelAndView modelAndView) {
         if (principal == null) {
-            return redirect("index");
+            modelAndView.addObject("title", "Index");
+            return view("/index", modelAndView);
         }
 
         return redirect("home");

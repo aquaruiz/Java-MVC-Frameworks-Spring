@@ -2,7 +2,7 @@ package io.bar.beerhub.services.models;
 
 public class OrderServiceModel {
     private String id;
-    private String customerName;
+    private String customerUsername;
     private String waitressName;
     private int beersNum;
     private boolean closed;
@@ -18,12 +18,12 @@ public class OrderServiceModel {
         this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCustomerUsername() {
+        return customerUsername;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomerUsername(String customerUsername) {
+        this.customerUsername = customerUsername;
     }
 
     public String getWaitressName() {
